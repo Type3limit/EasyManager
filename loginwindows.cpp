@@ -6,7 +6,7 @@ LoginWindows::LoginWindows(QWidget *parent) :
     ui(new Ui::LoginWindows)
 {
     ui->setupUi(this);
-
+    sql = nullptr;
 }
 
 LoginWindows::~LoginWindows()
@@ -31,12 +31,34 @@ void LoginWindows::on_Confirm_clicked()
     QString UserName = ui->NameEdit->text();
     QString Password = ui->PasswordEdit->text();
     QString Prameter = UserName + ","+Password+"\0";
-    sql = new SqlConnect();
+
+    if(sql == nullptr)
+      sql = new SqlConnect("login");
 
     bool ok = sql->exec(FE_Login,Prameter);
     if(!ok)
     {
-        QMessageBox::warning(this,"Tips","登录失败，请检查密码账号正确性或数据库完整性");
+        QMessageBox::warning(this,"Tips","登录失败!"+sql->Result());
+        qDebug()<<sql->Result();
+    }
+    else {
+        qDebug()<<"登录成功";
+        this->hide();
+        CurrentUser = UserName;
+
+
+
+        emit close();
     }
 
+}
+
+
+QString LoginWindows::GetCurrentUser()
+{
+    if(!CurrentUser.isNull())
+    return CurrentUser;
+    else {
+        return "错误用户";
+    }
 }

@@ -1,33 +1,32 @@
 
 #include "sqlconnect.h"
 
-SqlConnect::SqlConnect()
+SqlConnect::SqlConnect(QString type)
 {
 
-    database = QSqlDatabase::database("QMYSQL");
-    database.setHostName("127.0.0.1");
-    database.setPort(3306);
-    database.setDatabaseName("EasyManager");
-    database.setUserName("root");
-    database.setPassword("3939520");
+        db = new QSqlDatabase();
+        *db = QSqlDatabase::addDatabase("QMYSQL",type);
+        db->setHostName("localhost");
+        db->setPort(3306);
+        db->setDatabaseName("EasyManager");
+        db->setUserName("root");
+        db->setPassword("3939520");
 
-
-    if(database.isOpen())
-    {
-        QMessageBox::warning(nullptr,"提示","数据库已打开");
-    }
-    if(!database.open())
-     {
-         if(QMessageBox::Cancel==QMessageBox::warning(nullptr,"失败","数据库错误"+database.lastError().text(),QMessageBox::Cancel))
+        if(!db->open())
+        {
+         if(QMessageBox::Cancel==QMessageBox::warning(nullptr,"失败","数据库错误"+db->lastError().text(),QMessageBox::Cancel))
          {
              exit(-1);
          }
-     }
-    query.clear();
-    result.clear();
+        }
+       query = QSqlQuery(*db);
+       result.clear();
 }
 
-
+SqlConnect::~SqlConnect()
+{
+    db->close();
+}
 
 bool SqlConnect::exec(FunctionEnum command,QString paramter)
 {
@@ -64,6 +63,15 @@ bool SqlConnect::exec(FunctionEnum command,QString paramter)
     case FE_Register:
         IsSuccess = exec_Register(paramter);
         break;
+    case FE_Logout:
+        IsSuccess = exec_Logout(paramter);
+        break;
+    case FE_FindPasswd:
+        IsSuccess = exec_FindPasswd(paramter);
+        break;
+    case FE_ResetPasswd:
+        IsSuccess = exec_ResetPasswd(paramter);
+        break;
     }
     return IsSuccess;
 }
@@ -87,9 +95,8 @@ bool SqlConnect::exec_Login(QString paramter)
     {
         Password+=*(itr++);
     }
-
-    bool ok = query.exec("select password,IsLogin from userinfo where Acount = '"+ UserName +"';");
-
+    QString sentence = QString("SELECT user_password,user_login FROM userinfo WHERE user_account = '%1'").arg(UserName);
+    bool ok = query.exec(sentence);
     if(ok)
     {
         QString CorrectPasswd("\0");
@@ -103,20 +110,27 @@ bool SqlConnect::exec_Login(QString paramter)
             result = "当前用户已登录";
         }
         else {
-            if(CorrectPasswd==Password)
+            if(!CorrectPasswd.compare(Password))
             {
-                query.exec("insert into userinfo(IsLogin) values ('1') where Account = '"+UserName+"';");
+                sentence = QString("UPDATE userinfo SET user_login = 1 WHERE user_account = '%1'").arg(UserName);
+                query.exec(sentence);
+                qDebug()<<"after loggin :"<<query.lastError().text();
                 result = "用户登录完成";
+            }
+            else {
+                ok=false;
+                result = "请检查账号或密码是否正确";
             }
         }
     }
+    result += query.lastError().text();
     return ok;
 }
 
 bool SqlConnect::exec_Register(QString paramter)
 {
     QString UserName,Password,Question,Anwser,Time;
-    Time = QTime::currentTime().toString();
+    Time = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
     QString::iterator itr = paramter.begin();
     while(*itr!=',')
     {
@@ -134,16 +148,77 @@ bool SqlConnect::exec_Register(QString paramter)
     {
         Anwser+=*(itr++);
     }
-    QString Sentence =QString("insert into userinfo"
-                              "(Acount,Password,RegistTime,IsLogin,ModelChoose,PasswdQuestion,PasswdAnwser)"
-                              "values('"+UserName+"','"+Password+"','"+Time+"',1,"+"0,'"+Question+"','"+Anwser+"');"
-                              );
+    QString select = QString("SELECT user_account FROM userinfo WHERE user_account = '%1'").arg(UserName);
+    query.exec(select);
+    if(query.next())
+    {
+        result="当前用户名已被使用";
+        return false;
+    }
+    query.clear();
+
+    QString Sentence =QString("INSERT INTO userinfo"
+                              "(user_account,user_password,user_regist_time,user_login,"
+                              "user_model_choose,user_question,user_answer)"
+                              "VALUES('%1','%2','%3',0,0,'%4','%5')"
+                              ).arg(UserName).arg(Password).arg(Time).arg(Question).arg(Anwser);
     bool ok =query.exec(Sentence);
 
-    ok?result = "用户注册成功":result = "用户注册失败";
+    qDebug()<<query.lastError().text();
+
+    ok?result = "用户注册成功":result = "用户注册失败"+query.lastError().text();
 
     return ok;
 }
+
+bool SqlConnect::exec_FindPasswd(QString paramter)
+{
+    QString Name,Question,Answer;
+    QString::iterator itr = paramter.begin();
+
+    while(*itr != '\0')
+    {
+        Name+=(*itr++);
+    }
+    QString sentence= QString("SELECT user_question,user_answer FROM userinfo WHERE user_account = '%1'").arg(Name);
+    bool ok = query.exec(sentence);
+
+    if(ok)
+    {
+        if(query.next()&&!query.isNull(0))
+        {
+        result = QString("%1,%2").arg(query.value(0).toString()).arg(query.value(1).toString());
+        }
+        else {
+            ok = false;
+            result = "无此用户,请检查您是否输入无误";
+        }
+    }
+    else {
+        result = query.lastError().text();
+
+       }
+    return ok;
+}
+
+bool SqlConnect::exec_ResetPasswd(QString paramter)
+{
+    QString UserName,NewPasswd;
+    auto itr= paramter.begin();
+    while(*itr!=',')
+    {
+        UserName +=*(itr++);
+    }itr++;
+    while(*itr!='\0')
+    {
+        NewPasswd += *(itr++);
+    }
+    QString sentence = QString("UPDATE userinfo SET user_password = '%1',user_login = 0 WHERE user_account = '%2'").arg(NewPasswd).arg(UserName);
+    bool ok = query.exec(sentence);
+    ok? result = "修改密码成功":"修改失败"+query.lastError().text();
+    return ok;
+}
+
 
 bool SqlConnect::exec_Customization(QString paramter)
 {
@@ -191,5 +266,20 @@ bool SqlConnect::exec_OnHold(QString paramter)
 bool SqlConnect::exec_BeReady(QString paramter)
 {
     bool ok;
+    return ok;
+}
+
+bool SqlConnect::exec_Logout(QString paramter)
+{
+    QString UserName;
+    auto itr = paramter.begin();
+    while(*itr!='\0')
+    {
+          UserName+=*(itr++);
+    }
+    QString sentence = QString("UPDATE userinfo SET user_login=0 WHERE user_account = '%1'").arg(UserName);
+
+    bool ok = query.exec(sentence);
+    ok?result = "用户已退出":result = query.lastError().text();
     return ok;
 }

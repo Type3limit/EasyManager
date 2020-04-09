@@ -17,6 +17,11 @@ public:
     explicit LoginWindows(QWidget *parent = nullptr);
     ~LoginWindows();
 
+public:
+    QString GetCurrentUser();
+signals:
+    void close();
+
 private slots:
     void on_RegistButton_clicked();
 
@@ -29,6 +34,7 @@ private:
     RegistDialog* registDialog;
     FindPasswdDialog* findPasswordDialog;
     SqlConnect* sql;
+    QString CurrentUser;
 };
 
 #endif // LOGINWINDOWS_H

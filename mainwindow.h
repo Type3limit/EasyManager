@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <loginwindows.h>
+#include <sqlconnect.h>
+#include <QCloseEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,11 +17,16 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void show();
+    void SysStart();
+public slots:
+    void on_loginwindows_close();
+
+protected:
+    void closeEvent(QCloseEvent * event);
 
 private:
     Ui::MainWindow *ui;
     LoginWindows loginwindow;
-    //Ui::LoginWindows loginWindow;
+    SqlConnect *sql;
 };
 #endif // MAINWINDOW_H

@@ -155,4 +155,7 @@
  </widget>
  <resources/>
  <connections/>
+ <slots>
+  <signal>Closed()</signal>
+ </slots>
 </ui>

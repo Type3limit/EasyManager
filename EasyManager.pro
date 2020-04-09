@@ -21,6 +21,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     registdialog.cpp \
+    resetpasswddialog.cpp \
     sqlconnect.cpp
 
 HEADERS += \
@@ -28,13 +29,15 @@ HEADERS += \
     loginwindows.h \
     mainwindow.h \
     registdialog.h \
+    resetpasswddialog.h \
     sqlconnect.h
 
 FORMS += \
     findpasswddialog.ui \
     loginwindows.ui \
     mainwindow.ui \
-    registdialog.ui
+    registdialog.ui \
+    resetpasswddialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
