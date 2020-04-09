@@ -114,7 +114,6 @@ bool SqlConnect::exec_Login(QString paramter)
             {
                 sentence = QString("UPDATE userinfo SET user_login = 1 WHERE user_account = '%1'").arg(UserName);
                 query.exec(sentence);
-                qDebug()<<"after loggin :"<<query.lastError().text();
                 result = "用户登录完成";
             }
             else {

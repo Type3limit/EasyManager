@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    customizedialog.cpp \
     findpasswddialog.cpp \
     loginwindows.cpp \
     main.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
     sqlconnect.cpp
 
 HEADERS += \
+    customizedialog.h \
     findpasswddialog.h \
     loginwindows.h \
     mainwindow.h \
@@ -33,6 +35,7 @@ HEADERS += \
     sqlconnect.h
 
 FORMS += \
+    customizedialog.ui \
     findpasswddialog.ui \
     loginwindows.ui \
     mainwindow.ui \

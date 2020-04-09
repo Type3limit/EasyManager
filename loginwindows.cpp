@@ -39,15 +39,11 @@ void LoginWindows::on_Confirm_clicked()
     if(!ok)
     {
         QMessageBox::warning(this,"Tips","登录失败!"+sql->Result());
-        qDebug()<<sql->Result();
     }
     else {
         qDebug()<<"登录成功";
         this->hide();
         CurrentUser = UserName;
-
-
-
         emit close();
     }
 
