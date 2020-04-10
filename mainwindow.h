@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <loginwindows.h>
 #include <sqlconnect.h>
+#include <customizedialog.h>
 #include <QCloseEvent>
 
 QT_BEGIN_NAMESPACE
@@ -15,7 +16,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void SysStart();
 public slots:
@@ -27,6 +28,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     LoginWindows loginwindow;
+    CustomizeDialog customizeDialog;
     SqlConnect *sql;
 };
 #endif // MAINWINDOW_H

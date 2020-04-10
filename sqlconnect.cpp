@@ -72,6 +72,9 @@ bool SqlConnect::exec(FunctionEnum command,QString paramter)
     case FE_ResetPasswd:
         IsSuccess = exec_ResetPasswd(paramter);
         break;
+    case FE_Selcet:
+        IsSuccess =exec_Select(paramter);
+        break;
     }
     return IsSuccess;
 }
@@ -87,7 +90,7 @@ bool SqlConnect::exec_Login(QString paramter)
 {
     QString UserName,Password;
     QString::iterator itr = paramter.begin();
-    while(*itr != ',')
+    while(*itr != DepartSambol)
     {
         UserName+=*(itr++);
     }itr++;
@@ -131,15 +134,15 @@ bool SqlConnect::exec_Register(QString paramter)
     QString UserName,Password,Question,Anwser,Time;
     Time = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
     QString::iterator itr = paramter.begin();
-    while(*itr!=',')
+    while(*itr!=DepartSambol)
     {
         UserName+=*(itr++);
     }itr++;
-    while(*itr!=',')
+    while(*itr!=DepartSambol)
     {
         Password+=*(itr++);
     }itr++;
-    while(*itr!=',')
+    while(*itr!=DepartSambol)
     {
         Question+=*(itr++);
     }itr++;
@@ -177,7 +180,7 @@ bool SqlConnect::exec_FindPasswd(QString paramter)
 
     while(*itr != '\0')
     {
-        Name+=(*itr++);
+        Name+=*(itr++);
     }
     QString sentence= QString("SELECT user_question,user_answer FROM userinfo WHERE user_account = '%1'").arg(Name);
     bool ok = query.exec(sentence);
@@ -186,7 +189,7 @@ bool SqlConnect::exec_FindPasswd(QString paramter)
     {
         if(query.next()&&!query.isNull(0))
         {
-        result = QString("%1,%2").arg(query.value(0).toString()).arg(query.value(1).toString());
+        result = QString("%1%2%3").arg(query.value(0).toString()).arg(DepartSambol).arg(query.value(1).toString());
         }
         else {
             ok = false;
@@ -204,7 +207,7 @@ bool SqlConnect::exec_ResetPasswd(QString paramter)
 {
     QString UserName,NewPasswd;
     auto itr= paramter.begin();
-    while(*itr!=',')
+    while(*itr!=DepartSambol)
     {
         UserName +=*(itr++);
     }itr++;
@@ -221,7 +224,86 @@ bool SqlConnect::exec_ResetPasswd(QString paramter)
 
 bool SqlConnect::exec_Customization(QString paramter)
 {
-    bool ok=false;
+    int Model[ModelNumber];
+    QString Name;
+    auto itr = paramter.begin();
+    while(*itr!=DepartSambol)
+        Name+=*(itr++);
+    itr++;
+
+    for(int i = 0 ; i<ModelNumber;i++)
+    {
+        QString CurrentChoose = *(itr++);
+        Model[i] = CurrentChoose.toInt();
+    }
+
+    QString sentence1 = QString("UPDATE userinfo SET user_model_choose = 1 WHERE user_account = '%1'").arg(Name);
+
+    bool ok=query.exec(sentence1);
+    if(ok)
+    {
+        QString sentence2 = QString("INSERT INTO modelinfo"
+                                    "(model_user_id,model_customer_manage,model_product_manage,model_hold_queue,model_reserve,model_sell)"
+                                    "VALUES(%1,%2,%3,%4,%5,%6)").arg(Name)
+                .arg(Model[Mo_customer]).arg(Model[Mo_product]).arg(Model[Mo_queue]).arg(Model[Mo_reserve]).arg(Model[Mo_sell]);
+        ok= query.exec(sentence2);
+    }
+
+
+    if(!ok)
+        result = query.lastError().text();
+    else {
+        result = "客制化已完成";
+    }
+
+    return ok;
+}
+
+bool SqlConnect::exec_Select(QString paramter)
+{
+    QString Type,Name,Selectpart;
+    bool ok =false;
+    auto itr = paramter.begin();
+
+    while(*itr!=DepartSambol)
+        Type+=*(itr++);
+    itr++;
+    while(*itr!=DepartSambol)
+        Name+=*(itr++);
+    itr++;
+    while(*itr!='\0')
+       Selectpart+= *(itr++);
+    QString sentence;
+    if(!Type.compare("User"))
+    {
+        sentence = QString("SELECT %1 FROM userinfo WHERE user_account='%2'").arg(Selectpart).arg(Name);
+    }
+    else if (!Type.compare("Customer"))
+    {
+         sentence = QString("SELECT %1 FROM customerinfo WHERE customer_name='%2'").arg(Selectpart).arg(Name);
+    }
+    else if (!Type.compare("Product"))
+    {
+         sentence = QString("SELECT %1 FROM productsinfo WHERE product_id='%2'").arg(Selectpart).arg(Name);
+    }
+    else if (!Type.compare("Queue"))
+    {
+         sentence =QString ("SELECT %1 FROM queueinfo WHERE queue_acount = '%2'").arg(Selectpart).arg(Name);
+    }
+    else if (!Type.compare("Reserve"))
+    {
+        sentence =QString ("SELECT %1 FROM reserveinfo WHERE reserve_customer_id = '%2'").arg(Selectpart).arg(Name);
+    }
+    else {
+        ok = false;
+        result = "查询的内容有误";
+        return ok;
+    }
+    ok = query.exec(sentence);
+    if(query.next()&&!query.value(0).isNull())
+        result = query.value(0).toString();
+    if(!ok)
+        result = "查询失败"+query.lastError().text();
     return ok;
 }
 

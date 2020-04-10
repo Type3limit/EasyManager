@@ -30,7 +30,7 @@ void LoginWindows::on_Confirm_clicked()
 {
     QString UserName = ui->NameEdit->text();
     QString Password = ui->PasswordEdit->text();
-    QString Prameter = UserName + ","+Password+"\0";
+    QString Prameter = UserName + DepartSambol+Password+"\0";
 
     if(sql == nullptr)
       sql = new SqlConnect("login");
@@ -42,9 +42,11 @@ void LoginWindows::on_Confirm_clicked()
     }
     else {
         qDebug()<<"登录成功";
-        this->hide();
         CurrentUser = UserName;
-        emit close();
+        this->hide();
+        this->close();
+
+        //emit close();
     }
 
 }

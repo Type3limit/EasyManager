@@ -23,7 +23,7 @@ void ResetPasswdDialog::on_Comfirm_clicked()
 
     NewPasswd = ui->PasswdEdit->text();
 
-    QString param  = QString("%1,%2").arg(CurrentUser).arg(NewPasswd);
+    QString param  = QString("%1%2%3").arg(CurrentUser).arg(DepartSambol).arg(NewPasswd);
     bool ok = sql->exec(FE_ResetPasswd,param);
     if(ok)
     {

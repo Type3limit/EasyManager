@@ -55,7 +55,7 @@ void FindPasswdDialog::on_NameEdit_editingFinished()
     }
     else {
         auto itr = result.begin();
-        while(*itr!=',')
+        while(*itr!=DepartSambol)
             Question+=(*itr++);
         itr++;
         while(*itr!='\0')

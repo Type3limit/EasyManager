@@ -33,7 +33,7 @@ void RegistDialog::on_RegistButton_clicked()
         ui->PasswordConfirm->clear();
         return;
     }
-    QString Param = Name + ","+Password +","+Quetion+","+Answer + "\0";
+    QString Param = Name + DepartSambol+Password +DepartSambol+Quetion+DepartSambol+Answer + "\0";
 
 
 

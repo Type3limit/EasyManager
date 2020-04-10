@@ -11,8 +11,19 @@
 #include <QDebug>
 #include <QDateTime>
 
+enum Model//模块内容
+{
+    Mo_customer = 0,//客户信息管理
+    Mo_product ,//商品信息管理
+    Mo_queue,//等待队列
+    Mo_reserve,//预约
+    Mo_sell //商品贩售
+};
 
-enum FunctionEnum{
+const int ModelNumber = 5;//当前模块数
+const char DepartSambol = ',';//数据分隔符
+
+enum FunctionEnum{//数据库提供的功能接口
   FE_Customization = 0, //客制化
   FE_Register,//注册
   FE_Login,//登入
@@ -25,7 +36,8 @@ enum FunctionEnum{
   FE_BeReady,//出等待队列
   FE_Reserve,//预约
   FE_FindPasswd,//找回密码
-  FE_ResetPasswd//重设密码
+  FE_ResetPasswd,//重设密码
+  FE_Selcet//查询（单条内容）
 };
 
 
@@ -52,6 +64,7 @@ private:
     bool exec_Reserve(QString paramter);
     bool exec_FindPasswd(QString paramter);
     bool exec_ResetPasswd(QString paramter);
+    bool exec_Select(QString paramter);
 
 private:
     QSqlDatabase* db;
