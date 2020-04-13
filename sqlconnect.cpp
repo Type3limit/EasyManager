@@ -75,6 +75,13 @@ bool SqlConnect::exec(FunctionEnum command,QString paramter)
     case FE_Selcet:
         IsSuccess =exec_Select(paramter);
         break;
+    case FE_LoadCustomize:
+        IsSuccess = exec_LoadCustomize(paramter);
+        break;
+    case FE_CustomerAdd:
+        IsSuccess = exec_CustomerAdd(paramter);
+        break;
+
     }
     return IsSuccess;
 }
@@ -100,11 +107,12 @@ bool SqlConnect::exec_Login(QString paramter)
     }
     QString sentence = QString("SELECT user_password,user_login FROM userinfo WHERE user_account = '%1'").arg(UserName);
     bool ok = query.exec(sentence);
+    if(!query.next())
+        ok=false;
     if(ok)
     {
         QString CorrectPasswd("\0");
         int IsLoggin = 0;
-        query.next();
         CorrectPasswd = query.value(0).toString();
         IsLoggin = query.value(1).toInt();
         if(IsLoggin!= 0)
@@ -221,7 +229,6 @@ bool SqlConnect::exec_ResetPasswd(QString paramter)
     return ok;
 }
 
-
 bool SqlConnect::exec_Customization(QString paramter)
 {
     int Model[ModelNumber];
@@ -234,6 +241,7 @@ bool SqlConnect::exec_Customization(QString paramter)
     for(int i = 0 ; i<ModelNumber;i++)
     {
         QString CurrentChoose = *(itr++);
+        itr++;
         Model[i] = CurrentChoose.toInt();
     }
 
@@ -307,15 +315,102 @@ bool SqlConnect::exec_Select(QString paramter)
     return ok;
 }
 
+bool SqlConnect::exec_LoadCustomize(QString paramter)
+{
+    QString Name;
+    auto itr = paramter.begin();
+    while(*itr!='\0')
+    {
+        Name+=*(itr++);
+    }
+    QString sentence =  QString("SELECT model_customer_manage,"
+                                " model_product_manage,model_hold_queue,model_reserve,model_sell "
+                                "FROM modelinfo WHERE model_user_id = '%1'").arg(Name);
+    bool ok = query.exec(sentence);
+    if(!query.next()||!ok)
+    {
+        result = "读取客制化信息失败！";
+        return false;
+    }
+    result  = QString ("%1,%2,%3,%4,%5").arg(query.value(0).toString()).arg(query.value(1).toString())
+            .arg(query.value(2).toString()).arg(query.value(3).toString()).arg(query.value(4).toString());
+    return ok;
+}
+
+bool SqlConnect::exec_CustomerAdd(QString paramter)
+{
+   QString Name,Passwd,Contanct,CurTime;
+   auto itr  =paramter.begin();
+   while(*itr!=DepartSambol)
+       Name+=*(itr++);
+   itr++;
+   while(*itr!=DepartSambol)
+       Passwd+=*(itr++);
+   itr++;
+   while(*itr!='\0')
+       Contanct+=*(itr++);
+   CurTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
+   QString Sentence =QString("INSERT INTO customerinfo"
+                             "(customer_name,customer_password,customer_contanct,customer_regist_time,"
+                             ")"
+                             "VALUES('%1','%2','%3','%4')"
+                             ).arg(Name).arg(Passwd).arg(Contanct).arg(CurTime);
+   query.clear();
+   bool ok =query.exec(Sentence);
+   if(!ok )
+   {
+       result = "新增会员信息失败";
+   }
+   else {
+       result = "新增成功";
+   }
+   return ok;
+}
 
 bool SqlConnect::exec_ReCharge(QString paramter)
 {
-    bool ok;
+    QString Name,Amount;
+    QString CustomerID;
+    auto itr = paramter.begin();
+    while(*itr!=',')
+        Name += *(itr++);
+    itr++;
+    while(*itr!='\0')
+        Amount += *(itr++);
+
+    QString sentence =QString ("SELECT customer_id FROM customerinfo WHERE customerName = '%1'").arg(Name);
+    bool ok=false;
+    if(query.exec(sentence))
+    {
+        if(query.next())
+        {
+            CustomerID = query.value(0).toString();
+            query.clear();
+            sentence = QString ("SELECT custom_amount FROM customeramount WHERE custom_id = '%1'")
+                    .arg(CustomerID);
+            query.next();
+            double CurrentAmount = query.value(0).toDouble();
+            CurrentAmount+= Amount.toDouble();
+            sentence  = QString ("UPDATE customeramount SET custom_amount = '%1' WHERE "
+                                 "customer_id = '%2'").arg(CurrentAmount).arg(CustomerID);
+            query.clear();
+            ok = query.exec(sentence);
+            if(ok)
+                result = QString("余额充值成功！当前余额: %1 ").arg(CurrentAmount);
+        }
+        else {
+            ok = false;
+            result = query.lastError().text();
+        }
+    }
+    else
+       result = query.lastError().text();
     return ok;
 }
 
 bool SqlConnect::exec_Storage(QString paramter)
 {
+    QString Name,Cost,Info,ImagePath,Numbers;
     bool ok;
     return ok;
 }

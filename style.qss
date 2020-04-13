@@ -1,0 +1,12 @@
+QMainWindow{ 
+background-image: url(:/source/background.jpg);
+color:white;
+border:10px;
+font:bold 15px;
+}
+QDialog{
+background-image: url(:/source/dialogback.png);
+color:white;
+border:0px;
+font:bold 15px;
+}

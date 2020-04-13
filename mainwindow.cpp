@@ -3,7 +3,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    ,ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     sql = nullptr;
@@ -20,12 +20,20 @@ void MainWindow::SysStart()
     loginwindow.show();
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(Qt::Key_Escape == event->key())
+    {
+        this->close();
+    }
+}
+
 void MainWindow::on_loginwindows_close()
 {
     this->show();
     QString Name = loginwindow.GetCurrentUser();
     customizeDialog.SetName(Name);
-    QString WelcomeWords = QString("Welcome! %1").arg(Name);
+    QString WelcomeWords = QString("Welcome!        %1").arg(Name);
     ui->WelcomeLabel->setText(WelcomeWords);
     if(sql == nullptr)
         sql = new SqlConnect("select");
@@ -36,7 +44,6 @@ void MainWindow::on_loginwindows_close()
 
     if(result == 0)
     {
-
         customizeDialog.exec();
         sql->exec(FE_Selcet,param);
         result= sql->Result().toInt();
@@ -48,10 +55,87 @@ void MainWindow::on_loginwindows_close()
             return ;
         }
     }
-    QMessageBox::information(this,"tips","该用户客制化已完成！");
+    else {
+        LoadCustomize();
+    }
 
 }
 
+void MainWindow::LoadCustomize()
+{
+    if(sql==nullptr)
+        sql=new SqlConnect("LoadCustomize");
+    if(sql->exec(FE_LoadCustomize,loginwindow.GetCurrentUser()))
+    {
+        QString result = sql->Result();
+        auto itr = result.begin();
+        for(int i = 0; i< ModelNumber;i++,itr+=2)
+        {
+            QString  cur = *itr;
+           ModelChoose[i] = cur.toInt();
+        }
+
+
+        if(ModelChoose[Mo_sell]==1)
+        {
+            ui->SellButton->show();
+        }
+        else
+            ui->SellButton->hide();
+
+        if(ModelChoose[Mo_queue]==1)
+        {
+            ui->QueueButton->show();
+        }
+        else {
+            if(ModelChoose[Mo_reserve]==1)
+                ui->QueueButton->show();
+            else {
+                ui->QueueButton->hide();
+            }
+        }
+
+        if(ModelChoose[Mo_reserve]==1)
+        {
+            ui->QueueButton->show();
+        }
+        else {
+            if(ModelChoose[Mo_queue]==1)
+                ui->QueueButton->show();
+            else {
+                ui->QueueButton->hide();
+            }
+        }
+
+        if(ModelChoose[Mo_product]==1)
+        {
+            ui->ProductinButton->show();
+            ui->ProductoutButton->show();
+            ui->ProductinfoButton->show();
+        }
+        else {
+            ui->ProductinButton->hide();
+            ui->ProductoutButton->hide();
+            ui->ProductinfoButton->hide();
+        }
+        if(ModelChoose[Mo_customer]==1)
+        {
+            ui->CustomerinfoButton->show();
+            ui->CutomeraddButton->show();
+            ui->CustomerrechargeButton->show();
+        }
+        else {
+            ui->CustomerinfoButton->hide();
+            ui->CutomeraddButton->hide();
+            ui->CustomerrechargeButton->hide();
+        }
+
+    }
+    else {
+        QMessageBox::warning(this,"warning",sql->Result());
+        qApp->exit(-1);
+    }
+}
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
@@ -60,4 +144,16 @@ void MainWindow::closeEvent(QCloseEvent *event)
         sql->exec(FE_Logout,loginwindow.GetCurrentUser());
         QMainWindow::closeEvent(event);
     }
+}
+
+void MainWindow::on_LoginoutButton_2_clicked()
+{
+
+    if(this->close())
+      loginwindow.show();
+}
+
+void MainWindow::on_SellButton_clicked()
+{
+
 }

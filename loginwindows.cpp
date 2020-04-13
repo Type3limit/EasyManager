@@ -7,6 +7,9 @@ LoginWindows::LoginWindows(QWidget *parent) :
 {
     ui->setupUi(this);
     sql = nullptr;
+    setWindowOpacity(1);
+    setWindowFlags(Qt::FramelessWindowHint);
+    //setAttribute(Qt::WA_TranslucentBackground);
 }
 
 LoginWindows::~LoginWindows()
@@ -30,6 +33,16 @@ void LoginWindows::on_Confirm_clicked()
 {
     QString UserName = ui->NameEdit->text();
     QString Password = ui->PasswordEdit->text();
+
+
+    if(!UserName.compare("")||UserName.contains(DepartSambol))
+    {
+        QMessageBox::warning(this,"warning","用户名称有误！");
+        ui->NameEdit->clear();
+        ui->PasswordEdit->clear();
+        return ;
+    }
+
     QString Prameter = UserName + DepartSambol+Password+"\0";
 
     if(sql == nullptr)
@@ -39,6 +52,7 @@ void LoginWindows::on_Confirm_clicked()
     if(!ok)
     {
         QMessageBox::warning(this,"Tips","登录失败!"+sql->Result());
+        return ;
     }
     else {
         qDebug()<<"登录成功";
@@ -59,4 +73,19 @@ QString LoginWindows::GetCurrentUser()
     else {
         return "错误用户";
     }
+}
+
+
+void LoginWindows::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key()==Qt::Key_Escape)
+    {
+
+        if(QMessageBox::Yes == QMessageBox::question(this,"即将退出","确认退出吗?"))
+            qApp->exit();
+    }
+    else {
+        return QMainWindow::keyPressEvent(event);
+    }
+
 }

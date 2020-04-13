@@ -89,8 +89,9 @@
    <property name="font">
     <font>
      <family>Microsoft YaHei UI</family>
-     <pointsize>14</pointsize>
+     <pointsize>-1</pointsize>
      <weight>75</weight>
+     <italic>false</italic>
      <bold>true</bold>
     </font>
    </property>
@@ -100,11 +101,20 @@
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel
+{
+font: bold 15px
+}</string>
+   </property>
    <property name="text">
-    <string/>
+    <string>Hints</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="SureButton">

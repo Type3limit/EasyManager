@@ -5,6 +5,7 @@
 #include <registdialog.h>
 #include <findpasswddialog.h>
 #include <sqlconnect.h>
+#include <QKeyEvent>
 namespace Ui {
 class LoginWindows;
 }
@@ -28,7 +29,8 @@ private slots:
     void on_FindPasswdButton_clicked();
 
     void on_Confirm_clicked();
-
+protected:
+    void keyPressEvent(QKeyEvent*event);
 private:
     Ui::LoginWindows *ui;
     RegistDialog* registDialog;

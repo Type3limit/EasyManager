@@ -10,24 +10,490 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
   <property name="contextMenuPolicy">
    <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>EasyManager</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow{background-image: url(:/Theme/BackImage/CustomizeBack.jpg);
+border:10px;
+}
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="WelcomeLabel">
     <property name="geometry">
      <rect>
-      <x>680</x>
+      <x>510</x>
       <y>0</y>
-      <width>111</width>
-      <height>31</height>
+      <width>291</width>
+      <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #808000,stop:1 #FFFFF0);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font: bold 15px;
+color:rgba(0,0,100,200);
+padding:6px
+
+</string>
+    </property>
     <property name="text">
-     <string>test</string>
+     <string>欢迎：</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LoginoutButton_2">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>40</y>
+      <width>141</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #DCDCDC,stop:1 #808080);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,100,100);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>退出当前账号</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SellButton">
+    <property name="geometry">
+     <rect>
+      <x>-10</x>
+      <y>50</y>
+      <width>221</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+icon:url(:\Theme\Icon\sell.png);
+background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #ADFF2F,stop:1 #98FB98);
+border-style:outset;
+border-radius:100px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>售出</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ProductoutButton">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>180</y>
+      <width>221</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #D4F2E7,stop:1 #00BFFF );
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>商品出库</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ProductinButton">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>60</y>
+      <width>361</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #00FFFF,stop:1 #D4F2E7);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>商品入库</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SystemmanageButton">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>130</y>
+      <width>181</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #FF7F50,stop:1 #FF4500);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>系统管理</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Tips">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>321</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #FFFFF0,stop:1 #808000);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:4px
+
+</string>
+    </property>
+    <property name="text">
+     <string>当前可执行的功能如下：</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="CutomeraddButton">
+    <property name="geometry">
+     <rect>
+      <x>-30</x>
+      <y>360</y>
+      <width>201</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #00CED1,stop:1 #20B2AA);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>新会员注册</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>50</y>
+      <width>20</width>
+      <height>381</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SellinfoButton">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>320</y>
+      <width>241</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #4169E1,stop:1 #00BFFF);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>账单查询</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ProductinfoButton">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>180</y>
+      <width>131</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #1E90FF,stop:1 #F0F8FF);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>商品信息概览</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="CustomerrechargeButton">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>440</y>
+      <width>141</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #FFFFE0,stop:1 #FFD700);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>会员余额充值</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="QueueButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>470</y>
+      <width>211</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #FFEFD5,stop:1 #7CFC00);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>排队预约</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="CustomerinfoButton">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>450</y>
+      <width>211</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #B0E0E6,stop:1 #B0C4DE);
+border-style:outset;
+border-radius:30px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+    </property>
+    <property name="text">
+     <string>会员信息一览</string>
     </property>
    </widget>
   </widget>
@@ -41,7 +507,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

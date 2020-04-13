@@ -25,6 +25,13 @@ void RegistDialog::on_RegistButton_clicked()
     if(sql==nullptr)
         sql = new SqlConnect("regist");
 
+    if(Name.isNull())
+    {
+        QMessageBox::warning(this,"warning","错误的用户名称");
+        ui->NameEdit->clear();
+        return;
+    }
+
 
     if(Password!=Passwdconfirm)
     {

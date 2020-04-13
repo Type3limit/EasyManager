@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Theme/BackImage/background.jpg</file>
+        <file>Theme/BackImage/CustomizeBack.jpg</file>
+        <file>Theme/BackImage/DialogBack_1.jpg</file>
+        <file>Theme/BackImage/DialogBack_2.jpg</file>
+    </qresource>
+</RCC>

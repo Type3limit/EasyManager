@@ -85,10 +85,6 @@ void CustomizeDialog::ModelProcess()
 
 
         ui->DescribeLabel->setText(ModelDescribe[CurrentIndex]);
-        ui->DescribeLabel->adjustSize();
-        ui->DescribeLabel->setWordWrap(true);
-        ui->DescribeLabel->setAlignment(Qt::AlignTop);
-
         ui->CustomizeProcessBar->setValue(ProcessStep*(CurrentIndex+1));
     }
     if(CurrentIndex>4)

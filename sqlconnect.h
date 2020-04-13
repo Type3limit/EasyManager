@@ -20,9 +20,6 @@ enum Model//模块内容
     Mo_sell //商品贩售
 };
 
-const int ModelNumber = 5;//当前模块数
-const char DepartSambol = ',';//数据分隔符
-
 enum FunctionEnum{//数据库提供的功能接口
   FE_Customization = 0, //客制化
   FE_Register,//注册
@@ -37,8 +34,13 @@ enum FunctionEnum{//数据库提供的功能接口
   FE_Reserve,//预约
   FE_FindPasswd,//找回密码
   FE_ResetPasswd,//重设密码
-  FE_Selcet//查询（单条内容）
+  FE_Selcet,//查询（单条内容）
+  FE_LoadCustomize,//加载客制化
+  FE_CustomerAdd
 };
+
+const int ModelNumber = 5;//当前模块数
+const char DepartSambol = ',';//数据分隔符
 
 
 class SqlConnect
@@ -65,6 +67,8 @@ private:
     bool exec_FindPasswd(QString paramter);
     bool exec_ResetPasswd(QString paramter);
     bool exec_Select(QString paramter);
+    bool exec_LoadCustomize(QString paramter);
+    bool exec_CustomerAdd(QString paramter);
 
 private:
     QSqlDatabase* db;
