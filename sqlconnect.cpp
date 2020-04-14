@@ -4,23 +4,23 @@
 SqlConnect::SqlConnect(QString type)
 {
 
-        db = new QSqlDatabase();
-        *db = QSqlDatabase::addDatabase("QMYSQL",type);
-        db->setHostName("localhost");
-        db->setPort(3306);
-        db->setDatabaseName("EasyManager");
-        db->setUserName("root");
-        db->setPassword("3939520");
+    db = new QSqlDatabase();
+    *db = QSqlDatabase::addDatabase("QMYSQL",type);
+    db->setHostName("localhost");
+    db->setPort(3306);
+    db->setDatabaseName("EasyManager");
+    db->setUserName("root");
+    db->setPassword("3939520");
 
-        if(!db->open())
+    if(!db->open())
+    {
+        if(QMessageBox::Cancel==QMessageBox::warning(nullptr,"失败","数据库错误"+db->lastError().text(),QMessageBox::Cancel))
         {
-         if(QMessageBox::Cancel==QMessageBox::warning(nullptr,"失败","数据库错误"+db->lastError().text(),QMessageBox::Cancel))
-         {
-             exit(-1);
-         }
+            exit(-1);
         }
-       query = QSqlQuery(*db);
-       result.clear();
+    }
+    query = QSqlQuery(*db);
+    result.clear();
 }
 
 SqlConnect::~SqlConnect()
@@ -34,7 +34,7 @@ bool SqlConnect::exec(FunctionEnum command,QString paramter)
     switch (command)
     {
     case FE_Consume:
-       IsSuccess =  exec_Consume(paramter);
+        IsSuccess =  exec_Consume(paramter);
         break;
     case FE_Login:
         IsSuccess = exec_Login(paramter);
@@ -86,12 +86,10 @@ bool SqlConnect::exec(FunctionEnum command,QString paramter)
     return IsSuccess;
 }
 
-
 QString SqlConnect::Result()
 {
     return result;
 }
-
 
 bool SqlConnect::exec_Login(QString paramter)
 {
@@ -197,7 +195,7 @@ bool SqlConnect::exec_FindPasswd(QString paramter)
     {
         if(query.next()&&!query.isNull(0))
         {
-        result = QString("%1%2%3").arg(query.value(0).toString()).arg(DepartSambol).arg(query.value(1).toString());
+            result = QString("%1%2%3").arg(query.value(0).toString()).arg(DepartSambol).arg(query.value(1).toString());
         }
         else {
             ok = false;
@@ -207,7 +205,7 @@ bool SqlConnect::exec_FindPasswd(QString paramter)
     else {
         result = query.lastError().text();
 
-       }
+    }
     return ok;
 }
 
@@ -280,7 +278,7 @@ bool SqlConnect::exec_Select(QString paramter)
         Name+=*(itr++);
     itr++;
     while(*itr!='\0')
-       Selectpart+= *(itr++);
+        Selectpart+= *(itr++);
     QString sentence;
     if(!Type.compare("User"))
     {
@@ -288,15 +286,15 @@ bool SqlConnect::exec_Select(QString paramter)
     }
     else if (!Type.compare("Customer"))
     {
-         sentence = QString("SELECT %1 FROM customerinfo WHERE customer_name='%2'").arg(Selectpart).arg(Name);
+        sentence = QString("SELECT %1 FROM customerinfo WHERE customer_name='%2'").arg(Selectpart).arg(Name);
     }
     else if (!Type.compare("Product"))
     {
-         sentence = QString("SELECT %1 FROM productsinfo WHERE product_id='%2'").arg(Selectpart).arg(Name);
+        sentence = QString("SELECT %1 FROM productsinfo WHERE product_name='%2'").arg(Selectpart).arg(Name);
     }
     else if (!Type.compare("Queue"))
     {
-         sentence =QString ("SELECT %1 FROM queueinfo WHERE queue_acount = '%2'").arg(Selectpart).arg(Name);
+        sentence =QString ("SELECT %1 FROM queueinfo WHERE queue_costumer_id = '%2'").arg(Selectpart).arg(Name);
     }
     else if (!Type.compare("Reserve"))
     {
@@ -339,32 +337,32 @@ bool SqlConnect::exec_LoadCustomize(QString paramter)
 
 bool SqlConnect::exec_CustomerAdd(QString paramter)
 {
-   QString Name,Passwd,Contanct,CurTime;
-   auto itr  =paramter.begin();
-   while(*itr!=DepartSambol)
-       Name+=*(itr++);
-   itr++;
-   while(*itr!=DepartSambol)
-       Passwd+=*(itr++);
-   itr++;
-   while(*itr!='\0')
-       Contanct+=*(itr++);
-   CurTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
-   QString Sentence =QString("INSERT INTO customerinfo"
-                             "(customer_name,customer_password,customer_contanct,customer_regist_time,"
-                             ")"
-                             "VALUES('%1','%2','%3','%4')"
-                             ).arg(Name).arg(Passwd).arg(Contanct).arg(CurTime);
-   query.clear();
-   bool ok =query.exec(Sentence);
-   if(!ok )
-   {
-       result = "新增会员信息失败";
-   }
-   else {
-       result = "新增成功";
-   }
-   return ok;
+    QString Name,Passwd,Contanct,CurTime;
+    auto itr  =paramter.begin();
+    while(*itr!=DepartSambol)
+        Name+=*(itr++);
+    itr++;
+    while(*itr!=DepartSambol)
+        Passwd+=*(itr++);
+    itr++;
+    while(*itr!='\0')
+        Contanct+=*(itr++);
+    CurTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
+    QString Sentence =QString("INSERT INTO customerinfo"
+                              "(customer_name,customer_password,customer_contanct,customer_regist_time,"
+                              ")"
+                              "VALUES('%1','%2','%3','%4')"
+                              ).arg(Name).arg(Passwd).arg(Contanct).arg(CurTime);
+    query.clear();
+    bool ok =query.exec(Sentence);
+    if(!ok )
+    {
+        result = "新增会员信息失败";
+    }
+    else {
+        result = "新增成功";
+    }
+    return ok;
 }
 
 bool SqlConnect::exec_ReCharge(QString paramter)
@@ -404,44 +402,317 @@ bool SqlConnect::exec_ReCharge(QString paramter)
         }
     }
     else
-       result = query.lastError().text();
+        result = query.lastError().text();
     return ok;
 }
 
 bool SqlConnect::exec_Storage(QString paramter)
 {
-    QString Name,Cost,Info,ImagePath,Numbers;
-    bool ok;
+
+    QString Name,Cost,ImagePath,Numbers,Info;
+    QString CurId;
+    int Type = 0;// 0是进货，1是新增
+    auto itr = paramter.begin();
+    while(*itr!=DepartSambol)
+    {
+        Name+=*(itr++);
+    }itr++;
+    while(*itr!=DepartSambol)
+    {
+        Cost+=*(itr++);
+    }itr++;
+    while(*itr!=DepartSambol)
+    {
+        ImagePath+=*(itr++);
+    }itr++;
+    while(*itr!=DepartSambol)
+    {
+        Numbers+=*(itr++);
+    }itr++;
+    while(*itr!='\0')
+    {
+        Info+=*(itr++);
+    }
+    int number = Numbers.toInt();
+
+    QString sentence  = QString("SELECT product_id FROM productsinfo WHERE product_name='%1'").arg(Name);
+
+    bool ok = query.exec(sentence);
+
+    if(query.next())
+    {
+        Type = 0;
+        CurId = query.value(0).toString();
+        sentence = QString("UPDATE productcountinfo SET product_count = '%1' WHERE product_id = '%2'").arg(Numbers).arg(CurId);
+        ok = query.exec(sentence);
+        if(!ok)
+            result = query.lastError().text();
+    }
+
+    else{
+        Type = 1;
+        sentence = QString("INSERT INTO productsinfo(product_name,product_cost,product_info,product_image,product_useable) "
+                           "VALUES('%1','%2','%3','%4','%5')").arg(Name).arg(Cost).arg(Info).arg(ImagePath).arg(number>0?1:0);
+
+        ok =query.exec(sentence);
+
+        if(ok)
+        {
+            sentence = QString("SELECT product_id FROM productsinfo WHERE product_name='%1'").arg(Name);
+            query.exec(sentence);
+            if(query.next())
+            {
+                CurId = query.value(0).toString();
+                sentence = QString("INSERT INTO productcountinfo(product_id,product_count)VALUES('%1','%2')")
+                        .arg(CurId).arg(Numbers);
+                ok = query.exec(sentence);
+                if(!ok)
+                    result = query.lastError().text();
+            }
+        }
+    }
+    sentence = QString("INSERT INTO productininfo(productin_product_id,productin_product_name,productin_product_type"
+                       ",productin_product_number,productin_product_cost) VALUES('%1','%2','%3','%4','%5')").arg(CurId)
+            .arg(Name).arg(Type).arg(Numbers).arg(Cost);
+    ok = query.exec(sentence);
+    if(ok) result = "商品入库完成！";
+
     return ok;
 }
 
 bool SqlConnect::exec_Release(QString paramter)
 {
-    bool ok;
+
+    QString Name,Number,Cost;
+    QString CurID;
+    auto itr = paramter.begin();
+    while(*itr!= DepartSambol)
+    {
+        Name+=*(itr++);
+    }itr++;
+    while(*itr!=DepartSambol)
+    {
+        Number+=*(itr++);
+    }itr++;
+    while(*itr!='\0')
+    {
+        Cost+=*(itr++);
+    }
+
+    int CurNumber,StoragedNumber=0;
+    CurNumber = Number.toInt();
+    QString sentence = QString("SELECT product_id FROM productsinfo WHERE productname = '%1'").arg(Name);
+    bool ok = query.exec(sentence);
+    if(query.next())
+    {
+        CurID = query.value(0).toString();
+        sentence = QString("SELECT product_count FROM productcountinfo WHERE product_id = '%1'").arg(CurID);
+        ok = query.exec(sentence);
+        if(query.next())
+            StoragedNumber = query.value(0).toInt();
+    }
+
+    if(ok)
+    {
+        if(CurNumber>StoragedNumber)
+            ok= false;
+        else {
+            int Diff = StoragedNumber -CurNumber;
+            sentence =QString("INSERT INTO productoutinfo(productout_product_id,productout_number,"
+                              "productout_cost) VALUES('%1','%2','%3')")
+                    .arg(CurID).arg(CurNumber).arg(Cost);
+            ok = query.exec(sentence);
+            sentence = QString("UPDATE productcountinfo SET product_count = '%1'").arg(Diff);
+            ok = query.exec(sentence);
+            if(Diff == 0)
+            {
+                sentence = QString("UPDATE productsinfo SET product_useable = 0");
+                ok = query.exec(sentence);
+            }
+        }
+    }
+    else {
+        result = query.lastError().text();
+    }
     return ok;
 }
 
 bool SqlConnect::exec_Consume(QString paramter)
 {
-    bool ok;
+    QString CustomerName,ProductName,Amount,Count,Time;
+    Time = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
+    QString CustomerID,ProductID;
+    auto itr = paramter.begin();
+    while(*itr!=DepartSambol)
+    {
+        CustomerName+=*(itr++);
+    }itr++;
+    while(*itr!=DepartSambol)
+    {
+        ProductName += *(itr++);
+    }itr++;
+    while(*itr!=DepartSambol)
+    {
+        Amount +=*(itr++);
+    }itr++;
+    while(*itr!='\0')
+    {
+        Count+=*(itr++);
+    }itr++;
+
+    QString sentence =QString ("SELECT customer_id FROM customerinfo WHERE customer_name = '%1'").arg(CustomerName);
+    bool ok  = query.exec(sentence);
+    if(query.next())
+    {
+        CustomerID = query.value(0).toString();
+    }
+    sentence =QString("SELECT product_id FROM productsinfo WHERE product_name = '%1'").arg(ProductName);
+    query.clear();
+    ok = query.exec(sentence);
+    if(query.next())
+    {
+        ProductID =query.value(0).toString();
+    }
+
+    if(ok)
+    {
+        sentence=QString ("INSERT INTO customationinfo(consume_custom_id,consume_product_id,"
+                          "consume_custom_amount,consume_count)").arg(CustomerID).arg(ProductID)
+                .arg(Amount).arg(Count);
+        query.clear();
+        ok=query.exec(sentence);
+        int Single = (Amount.toInt())/(Count.toInt());
+        sentence=QString ("%1,%2,%3").arg(ProductName).arg(Count).arg(Single);
+        ok = exec_Release(sentence);
+        sentence =QString("SELECT custom_amount FROM customeramount WHERE custom_id = '%1' ").arg(CustomerID);
+        query.clear();
+        ok = query.exec(sentence);
+        double CurAmount= 0;
+        if(query.next())
+        {
+            CurAmount = query.value(0).toDouble();
+            double Diff =CurAmount - Amount.toDouble();
+            sentence = QString ("UPDATE customeramount SET custom_amount= '%1' WHERE custom_id = '%2'")
+                    .arg(Diff).arg(CustomerID);
+            query.clear();
+            ok = query.exec(sentence);
+        }
+        else {
+            ok = false;
+        }
+
+    }
+    if(!ok)
+        result = "消费信息记录失败";
+
     return ok;
 }
 
 bool SqlConnect::exec_Reserve(QString paramter)
 {
-    bool ok;
+    QString Name,Info,CurID;
+    auto itr = paramter.begin();
+    while(*itr!=DepartSambol)
+    {
+        Name+= *(itr++);
+    }itr++;
+    while(*itr!='\0')
+    {
+        Info +=*(itr++);
+    }
+    QString sentence = QString("SELECT cutomer_id FROM customerinfo WHERE cutomer_name = '%1'").arg(Name);
+    bool ok = query.exec(sentence);
+    if(query.next())
+    {
+        CurID = query.value(0).toString();
+        sentence = QString ("INSERT INTO reserveinfo(reserve_customer_id,reserve_contain)"
+                            "VALUES('%1','%2')").arg(CurID).arg(Info);
+        query.clear();
+        ok = query.exec(sentence);
+        result = "预约信息记录成功";
+    }
     return ok;
 }
 
 bool SqlConnect::exec_OnHold(QString paramter)
 {
-    bool ok;
+    QString Name,CurID;
+    QString CurNext,CurPrevious,CurLastID;
+    auto itr = paramter.begin();
+    while(*itr!='\0')
+    {
+        Name += *(itr++);
+    }
+    QString sentence =QString("SELECT customer_id FROM customerinfo WHERE customer_name = '%1'")
+            .arg(Name);
+    bool ok =query.exec(sentence);
+    if(query.next())
+    {
+        CurID = query.value(0).toString();
+        sentence = QString("SELECT queue_customer_id FROM queueinfo "
+                           "WHERE queue_next_id = NULL");
+        query.clear();
+        ok=query.exec(sentence);
+        if(query.next())
+        {
+            CurLastID = query.value(0).toString();
+            sentence =QString("UPDATE queueinfo SET queue_next_id = '%1' WHERE queue_customer_id = '%2'")
+                        .arg(CurID).arg(CurLastID);
+            ok = query.exec(sentence);
+            result = "信息添加成功";
+        }
+        else
+            CurLastID="NULL";
+        sentence =QString ("INSERT INTO queueinfo(queue_costumer_id"
+                           ",queue_previous_id) VALUES ('%1','%2')").arg(CurID).arg(CurLastID);
+        query.clear();
+        ok = query.exec(sentence);
+    }
+    if(!ok)
+        result =query.lastError().text();
     return ok;
 }
 
 bool SqlConnect::exec_BeReady(QString paramter)
 {
-    bool ok;
+    QString Name,CurID,NextID,PreviousID;
+    auto itr = paramter.begin();
+    while(*itr!='\0')
+        Name+=*(itr++);
+    QString sentence = QString ("SELECT costumer_id FROM costumerinfo WHERE costumer_name = '%1'").arg(Name);
+    bool ok =query.exec(sentence);
+    if(query.next())
+    {
+        CurID = query.value(0).toString();
+        sentence = QString("SELECT queue_next_id,queue_previous_id FROM queueinfo WHERE queue_costumer_id = '%1'")
+             .arg(CurID);
+        ok = query.exec(sentence);
+        if(query.next())
+        {
+            NextID = query.value(0).toString();
+            PreviousID = query.value(1).toString();
+            if(PreviousID.isEmpty())
+            {
+                sentence  = QString ("UPDATE queueinfo SET queue_previous_id = NULL WHERE queue_customer_id = '%1'")
+                        .arg(NextID);
+                ok = query.exec(sentence);
+                sentence  = QString ("DELECT FROM queueinfo WHERE queue_customer_id = '%1'").arg(CurID);
+                ok = query.exec(sentence);
+            }
+            else {
+                sentence =QString ("UPDATE queueinfo SET queue_next_id = '%1' WHERE queue_customer_id='%2'")
+                        .arg(NextID).arg(PreviousID);
+                ok = query.exec(sentence);
+                sentence  =QString("UPDATE queueinfo SET queue_previous_id = '%1' WHERE queue_customer_id = '%2'")
+                        .arg(PreviousID).arg(NextID);
+                ok = query.exec(sentence);
+            }
+        }
+
+
+    }
+    if(!ok)
+        result = query.lastError().text();
     return ok;
 }
 
@@ -451,7 +722,7 @@ bool SqlConnect::exec_Logout(QString paramter)
     auto itr = paramter.begin();
     while(*itr!='\0')
     {
-          UserName+=*(itr++);
+        UserName+=*(itr++);
     }
     QString sentence = QString("UPDATE userinfo SET user_login=0 WHERE user_account = '%1'").arg(UserName);
 
