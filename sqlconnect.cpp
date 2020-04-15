@@ -243,16 +243,32 @@ bool SqlConnect::exec_Customization(QString paramter)
         Model[i] = CurrentChoose.toInt();
     }
 
-    QString sentence1 = QString("UPDATE userinfo SET user_model_choose = 1 WHERE user_account = '%1'").arg(Name);
+    QString sentence1 =QString ("SELECT model_user_id FROM modelinfo WHERE model_user_id = '%1'").arg(Name);
 
     bool ok=query.exec(sentence1);
     if(ok)
     {
-        QString sentence2 = QString("INSERT INTO modelinfo"
-                                    "(model_user_id,model_customer_manage,model_product_manage,model_hold_queue,model_reserve,model_sell)"
-                                    "VALUES(%1,%2,%3,%4,%5,%6)").arg(Name)
-                .arg(Model[Mo_customer]).arg(Model[Mo_product]).arg(Model[Mo_queue]).arg(Model[Mo_reserve]).arg(Model[Mo_sell]);
+       QString sentence2;
+
+       if(query.next())
+       {
+          sentence2 = QString("UPDATE modelinfo SET model_customer_manage  = '%1',model_product_manage= '%2'"
+                              ",model_hold_queue='%3',model_reserve='%4',model_sell ='%5' WHERE model_user_id = '%6'")
+                  .arg(Model[Mo_customer]).arg(Model[Mo_product]).arg(Model[Mo_queue]).arg(Model[Mo_reserve]).arg(Model[Mo_sell]).arg(Name);
+          qDebug()<<"has record:"<<query.value(0).toString();
+       }
+       else {
+           sentence2 = QString("INSERT INTO modelinfo"
+                                       "(model_user_id,model_customer_manage,model_product_manage,model_hold_queue,model_reserve,model_sell) "
+                                       "VALUES(%1,%2,%3,%4,%5,%6)").arg(Name)
+                   .arg(Model[Mo_customer]).arg(Model[Mo_product]).arg(Model[Mo_queue]).arg(Model[Mo_reserve]).arg(Model[Mo_sell]);
+                    qDebug()<<"no record";
+       }
         ok= query.exec(sentence2);
+        sentence1 =  QString("UPDATE userinfo SET user_model_choose = 1 WHERE user_account = '%1'").arg(Name);
+
+        query.clear();
+        ok = query.exec(sentence1);
     }
 
 
@@ -349,7 +365,7 @@ bool SqlConnect::exec_CustomerAdd(QString paramter)
         Contanct+=*(itr++);
     CurTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:MM");
     QString Sentence =QString("INSERT INTO customerinfo"
-                              "(customer_name,customer_password,customer_contanct,customer_regist_time,"
+                              "(customer_name,customer_password,customer_contanct,customer_regist_time"
                               ")"
                               "VALUES('%1','%2','%3','%4')"
                               ).arg(Name).arg(Passwd).arg(Contanct).arg(CurTime);
@@ -357,7 +373,7 @@ bool SqlConnect::exec_CustomerAdd(QString paramter)
     bool ok =query.exec(Sentence);
     if(!ok )
     {
-        result = "新增会员信息失败";
+        result = query.lastError().text();
     }
     else {
         result = "新增成功";

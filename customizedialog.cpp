@@ -52,10 +52,12 @@ bool CustomizeDialog::SetName(QString Name)
 
 void CustomizeDialog::closeEvent(QCloseEvent *event)
 {
+    if(CurrentIndex < ModelNumber)
     if(QMessageBox::Cancel == QMessageBox::question(this,"tips","客制化尚未完成，确定要退出吗？"))
     {
         event->ignore();
     }
+
 }
 
 void CustomizeDialog::on_StartButton_clicked()
@@ -82,16 +84,14 @@ void CustomizeDialog::ModelProcess()
         else {
             ui->backbutton->hide();
         }
-
-
         ui->DescribeLabel->setText(ModelDescribe[CurrentIndex]);
-        ui->CustomizeProcessBar->setValue(ProcessStep*(CurrentIndex+1));
     }
-    if(CurrentIndex>4)
+    if(CurrentIndex>=ModelNumber)
         ui->CompliteButton->show();
     else {
         ui->CompliteButton->hide();
     }
+     ui->CustomizeProcessBar->setValue(ProcessStep*(CurrentIndex));
 }
 
 void CustomizeDialog::on_SureButton_clicked()

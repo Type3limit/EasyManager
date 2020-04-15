@@ -6,6 +6,7 @@
 #include <loginwindows.h>
 #include <sqlconnect.h>
 #include <customizedialog.h>
+#include <customeradddialog.h>
 #include <QKeyEvent>
 #include <QCloseEvent>
 
@@ -37,10 +38,13 @@ private slots:
 
     void on_SellButton_clicked();
 
+    void on_CutomeraddButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     LoginWindows loginwindow;
     CustomizeDialog customizeDialog;
+    CustomerAddDialog customerAddDialog;
     SqlConnect *sql;
     int ModelChoose[ModelNumber];
 

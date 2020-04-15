@@ -30,7 +30,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::on_loginwindows_close()
 {
-    this->show();
+
     QString Name = loginwindow.GetCurrentUser();
     customizeDialog.SetName(Name);
     QString WelcomeWords = QString("Welcome!        %1").arg(Name);
@@ -45,6 +45,7 @@ void MainWindow::on_loginwindows_close()
     if(result == 0)
     {
         customizeDialog.exec();
+        QString param = QString("User,%1,%2").arg(Name).arg("user_model_choose");
         sql->exec(FE_Selcet,param);
         result= sql->Result().toInt();
         if(result == 0)
@@ -55,14 +56,14 @@ void MainWindow::on_loginwindows_close()
             return ;
         }
     }
-    else {
         LoadCustomize();
-    }
-
 }
+
+
 
 void MainWindow::LoadCustomize()
 {
+
     if(sql==nullptr)
         sql=new SqlConnect("LoadCustomize");
     if(sql->exec(FE_LoadCustomize,loginwindow.GetCurrentUser()))
@@ -133,8 +134,9 @@ void MainWindow::LoadCustomize()
     }
     else {
         QMessageBox::warning(this,"warning",sql->Result());
-        qApp->exit(-1);
+        this->close();
     }
+   this->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -142,7 +144,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if(QMessageBox::No == QMessageBox::question(this,"warning","确认退出吗？",QMessageBox::Ok,QMessageBox::No)) event->ignore();
     else {
         sql->exec(FE_Logout,loginwindow.GetCurrentUser());
-        QMainWindow::closeEvent(event);
     }
 }
 
@@ -156,4 +157,9 @@ void MainWindow::on_LoginoutButton_2_clicked()
 void MainWindow::on_SellButton_clicked()
 {
 
+}
+
+void MainWindow::on_CutomeraddButton_clicked()
+{
+    customerAddDialog.exec();
 }

@@ -107,7 +107,7 @@ color:rgba(0,0,0,200);
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-icon:url(:\Theme\Icon\sell.png);
+
 background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #ADFF2F,stop:1 #98FB98);
 border-style:outset;
 border-radius:100px;
