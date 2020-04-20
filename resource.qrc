@@ -4,5 +4,12 @@
         <file>Theme/BackImage/CustomizeBack.jpg</file>
         <file>Theme/BackImage/DialogBack_1.jpg</file>
         <file>Theme/BackImage/DialogBack_2.jpg</file>
+        <file>Theme/BackImage/DialogBack_3.jpg</file>
+        <file>Theme/BackImage/DialogBack_4.png</file>
+        <file>Theme/BackImage/DialogBack_5.jpg</file>
+        <file>Theme/BackImage/DialogBack_6.jpg</file>
+        <file>Theme/BackImage/DialogBack_7.jpg</file>
+        <file>Theme/BackImage/Dialogback_8.jpg</file>
+        <file>Theme/BackImage/DialogBack_9.jpg</file>
     </qresource>
 </RCC>

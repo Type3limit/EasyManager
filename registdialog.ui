@@ -25,6 +25,18 @@
   <property name="windowTitle">
    <string>EasyManager_Regist</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog
+{
+background-image:url(&quot;:/Theme/BackImage/DialogBack_5.jpg&quot;)
+}
+
+QLabel
+{
+font:bold 12px;
+color:black
+}</string>
+  </property>
   <widget class="QLineEdit" name="NameEdit">
    <property name="geometry">
     <rect>

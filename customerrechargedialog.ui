@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CustomerRechargeDialog</class>
+ <widget class="QDialog" name="CustomerRechargeDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>631</width>
+    <height>516</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>EasyManager-CustomerRecharge</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog{background-image:url(&quot;:/Theme/BackImage/DialogBack_2.jpg&quot;)}</string>
+  </property>
+  <widget class="QLineEdit" name="NameEdit">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>100</y>
+     <width>511</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>80</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font:bold 15px;
+color:white</string>
+   </property>
+   <property name="text">
+    <string>充值会员名称：</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="CountEdit">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>240</y>
+     <width>191</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>220</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font:bold 15px;
+color:white</string>
+   </property>
+   <property name="text">
+    <string>充值金额</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>360</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font:bold 15px;
+color:white</string>
+   </property>
+   <property name="text">
+    <string>确认充值金额</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="CountConfirmEdit">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>380</y>
+     <width>191</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>340</y>
+     <width>181</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #FFFF00,stop:1 #FFD700);
+border-style:outset;
+border-radius:50px;
+border-width:0px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+   </property>
+   <property name="text">
+    <string>确认</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -17,33 +17,48 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     customeradddialog.cpp \
+    customerrechargedialog.cpp \
     customizedialog.cpp \
     findpasswddialog.cpp \
     loginwindows.cpp \
     main.cpp \
     mainwindow.cpp \
+    productadddialog.cpp \
+    productindialog.cpp \
+    productinmodeldialog.cpp \
     registdialog.cpp \
     resetpasswddialog.cpp \
+    selldialog.cpp \
     sqlconnect.cpp
 
 HEADERS += \
     customeradddialog.h \
+    customerrechargedialog.h \
     customizedialog.h \
     findpasswddialog.h \
     loginwindows.h \
     mainwindow.h \
+    productadddialog.h \
+    productindialog.h \
+    productinmodeldialog.h \
     registdialog.h \
     resetpasswddialog.h \
+    selldialog.h \
     sqlconnect.h
 
 FORMS += \
     customeradddialog.ui \
+    customerrechargedialog.ui \
     customizedialog.ui \
     findpasswddialog.ui \
     loginwindows.ui \
     mainwindow.ui \
+    productadddialog.ui \
+    productindialog.ui \
+    productinmodeldialog.ui \
     registdialog.ui \
-    resetpasswddialog.ui
+    resetpasswddialog.ui \
+    selldialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

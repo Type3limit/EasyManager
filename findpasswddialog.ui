@@ -13,6 +13,17 @@
   <property name="windowTitle">
    <string>EasyManager_FindPassword</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog
+{
+background-image:url(&quot;:/Theme/BackImage/DialogBack_4.png&quot;);
+}
+QLabel
+{
+font:bold 15px;
+color:white
+}</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
@@ -41,8 +52,8 @@
     <rect>
      <x>50</x>
      <y>210</y>
-     <width>54</width>
-     <height>20</height>
+     <width>71</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -63,13 +74,16 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>330</y>
+     <y>310</y>
      <width>111</width>
-     <height>20</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
     <string>输入正确的密保答案</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
@@ -89,13 +103,16 @@
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>210</y>
+     <y>175</y>
      <width>341</width>
-     <height>16</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

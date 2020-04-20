@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -59,11 +59,10 @@ void MainWindow::on_loginwindows_close()
         LoadCustomize();
 }
 
-
-
 void MainWindow::LoadCustomize()
 {
 
+    this->show();
     if(sql==nullptr)
         sql=new SqlConnect("LoadCustomize");
     if(sql->exec(FE_LoadCustomize,loginwindow.GetCurrentUser()))
@@ -136,7 +135,7 @@ void MainWindow::LoadCustomize()
         QMessageBox::warning(this,"warning",sql->Result());
         this->close();
     }
-   this->show();
+
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -156,10 +155,20 @@ void MainWindow::on_LoginoutButton_2_clicked()
 
 void MainWindow::on_SellButton_clicked()
 {
-
+    sellDialog.exec();
 }
 
 void MainWindow::on_CutomeraddButton_clicked()
 {
     customerAddDialog.exec();
+}
+
+void MainWindow::on_CustomerrechargeButton_clicked()
+{
+    CRechargeDialog.exec();
+}
+
+void MainWindow::on_ProductinButton_clicked()
+{
+    ModelDialog.exec();
 }

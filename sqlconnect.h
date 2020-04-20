@@ -27,7 +27,8 @@ enum FunctionEnum{//数据库提供的功能接口
   FE_Logout,//登出
   FE_Consume,//消费
   FE_Recharge,//充值
-  FE_Storage,//入库
+  FE_Storage_new,//新品入库
+  FE_Storage_old,//旧商品入库
   FE_Release,//出库
   FE_OnHold,//入等待队列
   FE_BeReady,//出等待队列
@@ -36,7 +37,8 @@ enum FunctionEnum{//数据库提供的功能接口
   FE_ResetPasswd,//重设密码
   FE_Selcet,//查询（单条内容）
   FE_LoadCustomize,//加载客制化
-  FE_CustomerAdd
+  FE_CustomerAdd//添加会员
+
 };
 
 const int ModelNumber = 5;//当前模块数
@@ -59,7 +61,8 @@ private:
     bool exec_Logout(QString paramter);
     bool exec_Consume(QString paramter);
     bool exec_ReCharge(QString paramter);
-    bool exec_Storage(QString paramter);
+    bool exec_Storage_new(QString paramter);
+    bool exec_Storage_old(QString paramter);
     bool exec_Release(QString paramter);
     bool exec_OnHold(QString paramter);
     bool exec_BeReady(QString paramter);

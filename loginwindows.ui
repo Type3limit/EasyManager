@@ -26,7 +26,7 @@
    <string>EasyManager_Login</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow{background-image: url(:/Theme/BackImage/DialogBack_1.jpg);
+   <string notr="true">QMainWindow{background-image: url(&quot;:/Theme/BackImage/CustomizeBack.jpg&quot;);
 border:10px;
 background-color:rgba(0,0,0,200);
 

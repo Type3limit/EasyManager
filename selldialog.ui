@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SellDialog</class>
+ <widget class="QDialog" name="SellDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>803</width>
+    <height>556</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>EasyManager-Sell</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog
+{
+background-image:url(&quot;:/Theme/BackImage/DialogBack_7.jpg&quot;)
+}</string>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ProductInModelDialog</class>
+ <widget class="QDialog" name="ProductInModelDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>429</width>
+    <height>295</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel
+{
+font:bold 15px;
+}
+
+QDialog
+{
+background-image:url(&quot;:/Theme/BackImage/DialogBack_8.jpg&quot;);
+}</string>
+  </property>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>50</y>
+     <width>141</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+
+background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #ADFF2F,stop:1 #98FB98);
+border-style:inset;
+border-radius:50px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:rgba(100,255,100,200);
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:rgba(100,255,100,100);
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+   </property>
+   <property name="text">
+    <string>新增商品</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>50</y>
+     <width>131</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+
+background-color:qlineargradient(spread:pad,x1:1,y1:0,x2:0,y2:0,stop:0 #66CCFF,stop:1 #E1FFFF);
+border-style:outset;
+border-radius:50px;
+border-width:4px;
+border-color:rgba(255,255,255,30);
+font:bold 15px;
+color:rgba(0,0,0,200);
+padding:6px}
+
+QPushButton:pressed{
+background-color:#66CCFF;
+border-color:rgba(255,255,255,30);
+border-style:inset;
+color:rgba(0,0,0,100);
+}
+
+QPushButton:hover{
+background-color:#66CCFF;
+border-color:rgba(255,255,255,200);
+color:rgba(0,0,0,200);
+}</string>
+   </property>
+   <property name="text">
+    <string>商品进货</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>10</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>选择进货种类</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

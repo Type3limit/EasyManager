@@ -3,12 +3,16 @@
 
 #include <QMainWindow>
 #include <QtWidgets>
+#include <QKeyEvent>
+#include <QCloseEvent>
+
 #include <loginwindows.h>
 #include <sqlconnect.h>
 #include <customizedialog.h>
 #include <customeradddialog.h>
-#include <QKeyEvent>
-#include <QCloseEvent>
+#include <selldialog.h>
+#include <customerrechargedialog.h>
+#include <productinmodeldialog.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,13 +44,23 @@ private slots:
 
     void on_CutomeraddButton_clicked();
 
+    void on_CustomerrechargeButton_clicked();
+
+    void on_ProductinButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+    SqlConnect *sql;
+    int ModelChoose[ModelNumber];
+
+
+private:
     LoginWindows loginwindow;
     CustomizeDialog customizeDialog;
     CustomerAddDialog customerAddDialog;
-    SqlConnect *sql;
-    int ModelChoose[ModelNumber];
+    SellDialog sellDialog;
+    CustomerRechargeDialog CRechargeDialog;
+
 
 };
 #endif // MAINWINDOW_H

@@ -23,7 +23,17 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>EasyManager-ResetPasswd</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog{
+background-image:url(&quot;:/Theme/BackImage/DialogBack_6.jpg&quot;)
+}
+QLabel
+{
+font:bold 15px;
+color:white;
+}</string>
   </property>
   <widget class="QLineEdit" name="PasswdEdit">
    <property name="geometry">
@@ -48,27 +58,33 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>3</x>
-     <y>90</y>
+     <x>0</x>
+     <y>60</y>
      <width>71</width>
-     <height>20</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="text">
     <string>输入新的密码</string>
    </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>220</y>
-     <width>81</width>
-     <height>20</height>
+     <x>0</x>
+     <y>200</y>
+     <width>71</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="text">
     <string>确认新的密码</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="Comfirm">
