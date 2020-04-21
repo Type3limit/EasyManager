@@ -60,7 +60,7 @@ private:
     CustomerAddDialog customerAddDialog;
     SellDialog sellDialog;
     CustomerRechargeDialog CRechargeDialog;
-
+    ProductInModelDialog ModelDialog;
 
 };
 #endif // MAINWINDOW_H

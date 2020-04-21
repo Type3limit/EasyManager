@@ -11,17 +11,18 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>EasyManager-ProductModel</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel
 {
 font:bold 15px;
+color:white
 }
 
 QDialog
 {
-background-image:url(&quot;:/Theme/BackImage/DialogBack_8.jpg&quot;);
+background-image:url(&quot;:/Theme/BackImage/background.jpg&quot;);
 }</string>
   </property>
   <widget class="QPushButton" name="pushButton">

@@ -6,7 +6,7 @@ SqlConnect::SqlConnect(QString type)
 
     db = new QSqlDatabase();
     *db = QSqlDatabase::addDatabase("QMYSQL",type);
-    db->setHostName("localhost");
+    db->setHostName("mylocal");
     db->setPort(3306);
     db->setDatabaseName("EasyManager");
     db->setUserName("root");
@@ -75,8 +75,11 @@ bool SqlConnect::exec(FunctionEnum command,QString paramter)
     case FE_ResetPasswd:
         IsSuccess = exec_ResetPasswd(paramter);
         break;
-    case FE_Selcet:
-        IsSuccess =exec_Select(paramter);
+    case FE_SelcetSingle:
+        IsSuccess =exec_SelectSingle(paramter);
+        break;
+    case FE_SelectAll:
+        IsSuccess = exec_SelectAll(paramter);
         break;
     case FE_LoadCustomize:
         IsSuccess = exec_LoadCustomize(paramter);
@@ -279,7 +282,7 @@ bool SqlConnect::exec_Customization(QString paramter)
     return ok;
 }
 
-bool SqlConnect::exec_Select(QString paramter)
+bool SqlConnect::exec_SelectSingle(QString paramter)
 {
     QString Type,Name,Selectpart;
     result.clear();
@@ -315,6 +318,14 @@ bool SqlConnect::exec_Select(QString paramter)
     {
         sentence =QString ("SELECT %1 FROM reserveinfo WHERE reserve_customer_id = '%2'").arg(Selectpart).arg(Name);
     }
+    else if (!Type.compare("CustomerAmount"))
+    {
+        sentence = QString("SELELCT customer_amount FROM customeramount WHERE customer_id  = '%1'").arg(Name);
+    }
+    else if (!Type.compare("ProductCount"))
+    {
+        sentence = QString ("SELECT product_count FROM productcountinfo WHERE product_id = '%1'").arg(Name);
+    }
     else {
         ok = false;
         result = "查询的内容有误";
@@ -327,6 +338,76 @@ bool SqlConnect::exec_Select(QString paramter)
     if(!ok)
         result = "查询失败"+query.lastError().text();
     return ok;
+}
+
+bool SqlConnect::exec_SelectAll(QString paramter)
+{
+    QString Type,Part;
+    auto itr = paramter.begin();
+    while(*itr!=DepartSambol&&*itr!='\0')
+    {
+        Type+=*(itr++);
+    }itr++;
+    while(*itr!='\0')
+    {
+        Part+=*(itr++);
+    }itr++;
+
+    QString sentence;
+    bool ok  =false;
+    bool type = true;
+    if(!Type.compare("Customer"))
+    {
+        sentence =QString("SELECT * FROM customerinfo");
+        type=true;
+    }
+    else if (!Type.compare("Product"))
+    {
+        sentence = QString ("SELECT * FROM productsinfo");
+        qDebug()<<"enter Product case";
+        type= true;
+    }
+
+    else if (!Type.compare("Manual"))
+    {
+
+        sentence = QString("SELECT COUNT(*) FROM %1").arg(Part);
+        qDebug()<<"enter manual case";
+        type = false;
+    }
+    else {
+        result = "查询内容有误";
+
+        return ok;
+    }
+    query.clear();
+    ok = query.exec(sentence);
+    if(ok&&type)
+    {
+        QSqlRecord rec = query.record();
+        int row = rec.count();
+        qDebug()<<"Enter result case,current row:"<<row;
+        while(query.next())
+        {
+            for(int i = 0 ;i<row;i++)
+            {
+                result+= QString(",%1").arg(query.value(i).toString());
+            }
+            result+='#';
+        }
+        qDebug()<<"on result case:"<<result;
+    }
+    else if (ok&& !type)
+    {
+        query.next();
+        result  = query.value(0).toString();
+        qDebug()<<"on count case:"<<result;
+    }
+    else
+        result = query.lastError().text();
+    return ok ;
+
+
 }
 
 bool SqlConnect::exec_LoadCustomize(QString paramter)
@@ -460,11 +541,10 @@ bool SqlConnect::exec_Storage_new(QString paramter)
         Info+=*(itr++);
     }
     int number = Numbers.toInt();
-    qDebug()<<Numbers;
-    qDebug()<<number;
+
     int useable = 0 ;
     if(number>0)
-       useable = 1;
+        useable = 1;
 
     QString sentence = QString("INSERT INTO productsinfo (product_name,product_cost,product_info,product_image,product_useable)"
                                "VALUES('%1','%2','%3','%4','%5')").arg(Name).arg(Cost).arg(Info).arg(ImagePath).arg(useable);
@@ -472,7 +552,7 @@ bool SqlConnect::exec_Storage_new(QString paramter)
 
     bool ok =query.exec(sentence);
     QSqlDatabase::database().commit();
-    qDebug()<<"on insert :"<<query.lastError().text();
+
 
     if(ok)
     {
@@ -483,12 +563,12 @@ bool SqlConnect::exec_Storage_new(QString paramter)
 
 
 
-            sentence = QString("INSERT INTO productcountinfo (product_id,product_count) VALUES('%1','%2')")
-                    .arg(CurId).arg(number);
-            ok = query.exec(sentence);
-            qDebug()<<"On productcount insert:"<<query.lastError();
-            if(!ok)
-                result = query.lastError().text();
+        sentence = QString("INSERT INTO productcountinfo (product_id,product_count) VALUES('%1','%2')")
+                .arg(CurId).arg(number);
+        ok = query.exec(sentence);
+
+        if(!ok)
+            result = query.lastError().text();
     }
 
     sentence = QString("INSERT INTO productininfo(productin_product_id,productin_product_name,productin_product_type,"
@@ -497,7 +577,7 @@ bool SqlConnect::exec_Storage_new(QString paramter)
             .arg(Name).arg(0).arg(number).arg(Cost);
 
     ok = query.exec(sentence);
-    qDebug()<<"On productin insert:"<<query.lastError().text();
+
     if(ok) result = "商品入库完成！";
     else result = query.lastError().text();
     return ok;

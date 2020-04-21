@@ -38,7 +38,7 @@ void MainWindow::on_loginwindows_close()
     if(sql == nullptr)
         sql = new SqlConnect("select");
     QString param = QString("User,%1,%2").arg(Name).arg("user_model_choose");
-    bool ok = sql->exec(FE_Selcet,param);
+    bool ok = sql->exec(FE_SelcetSingle,param);
     int result = 0;
     ok? result=sql->Result().toInt():QMessageBox::warning(this,"warning",sql->Result());
 
@@ -46,7 +46,7 @@ void MainWindow::on_loginwindows_close()
     {
         customizeDialog.exec();
         QString param = QString("User,%1,%2").arg(Name).arg("user_model_choose");
-        sql->exec(FE_Selcet,param);
+        sql->exec(FE_SelcetSingle,param);
         result= sql->Result().toInt();
         if(result == 0)
         {

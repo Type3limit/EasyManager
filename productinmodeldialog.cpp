@@ -12,3 +12,14 @@ ProductInModelDialog::~ProductInModelDialog()
 {
     delete ui;
 }
+
+void ProductInModelDialog::on_pushButton_clicked()
+{
+    productAddDialog.exec();
+}
+
+
+void ProductInModelDialog::on_pushButton_2_clicked()
+{
+    productInDialog.exec();
+}

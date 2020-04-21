@@ -34,7 +34,7 @@ void CustomerAddDialog::on_pushButton_clicked()
 
     Contanct = ui->ContanctEdit->text();
     QString Paramter = QString ("%1,%2,%3").arg("Customer").arg(Name).arg("customer_name");
-    sql->exec(FE_Selcet,Paramter);
+    sql->exec(FE_SelcetSingle,Paramter);
     QString result = sql->Result();
 
     if(!result.compare(""))
