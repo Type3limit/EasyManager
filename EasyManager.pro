@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     customeradddialog.cpp \
     customerrechargedialog.cpp \
+    customerviewdialog.cpp \
     customizedialog.cpp \
     findpasswddialog.cpp \
     loginwindows.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
 HEADERS += \
     customeradddialog.h \
     customerrechargedialog.h \
+    customerviewdialog.h \
     customizedialog.h \
     findpasswddialog.h \
     loginwindows.h \
@@ -49,6 +51,7 @@ HEADERS += \
 FORMS += \
     customeradddialog.ui \
     customerrechargedialog.ui \
+    customerviewdialog.ui \
     customizedialog.ui \
     findpasswddialog.ui \
     loginwindows.ui \

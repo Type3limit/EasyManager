@@ -24,11 +24,11 @@ void ProductInDialog::Initlize()
     if(ok)
     {
 
-    Count = sql->Result().toInt();
-    qDebug()<<"count number is :"<<Count;
-    IDs = new QString[Count];
-    Names= new QString[Count];
-    Images= new QString[Count];
+        Count = sql->Result().toInt();
+
+        IDs = new QString[Count];
+        Names= new QString[Count];
+        Images= new QString[Count];
     }
     else {
         QMessageBox::information(this,"tips",sql->Result());
@@ -38,7 +38,7 @@ void ProductInDialog::Initlize()
     if(ok)
     {
         QString result  = sql->Result();
-        qDebug()<<"on recive result"<<result;
+
         auto itr = result.begin();
         for(int i  = 0 ; i<Count;i++)
         {
@@ -57,10 +57,7 @@ void ProductInDialog::Initlize()
             while(*itr!=SentenceEnded&&*itr!='\0')
                 itr++;
             itr++;
-           ui->ProductChooseBox->addItem(Names[i]);
-           qDebug()<<"On name:"<<Names[i];
-           qDebug()<<"On Images:"<<Images[i];
-           qDebug()<<"On IDs:"<<IDs[i];
+            ui->ProductChooseBox->addItem(Names[i]);
 
         }
     }
@@ -80,12 +77,18 @@ void ProductInDialog::on_ProductChooseBox_activated(int index)
     if(sql->exec(FE_SelcetSingle,pram))
     {
         ui->CountHavenEdit->setText(sql->Result());
-        QImage image(Images[index]);
-        QPixmap pixmap = QPixmap::fromImage(image);
-        int width = ui->ImageLabel->width();
-        int height = ui->ImageLabel->height();
-        pixmap = pixmap.scaled(width,height,Qt::KeepAspectRatio,Qt::SmoothTransformation);
-        ui->ImageLabel->setPixmap(pixmap);
+        if(!Images[index].isNull())
+        {
+            QImage image(Images[index]);
+            QPixmap pixmap = QPixmap::fromImage(image);
+            int width = ui->ImageLabel->width();
+            int height = ui->ImageLabel->height();
+            pixmap = pixmap.scaled(width,height,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+            ui->ImageLabel->setPixmap(pixmap);
+        }
+        else {
+            ui->ImageLabel->setText("该商品无预览图");
+        }
     }
     else {
         QMessageBox::warning(this,"warning",sql->Result());
@@ -109,7 +112,7 @@ void ProductInDialog::on_ConfirmButton_clicked()
     if(sql==nullptr)
         sql= new SqlConnect("ProductIn");
 
-    bool ok  = sql->exec(FE_Storage_old,Name+Numbers+InPrice+OutPrice);
+    bool ok  = sql->exec(FE_Storage_old,Name+','+Numbers+','+InPrice+','+OutPrice+'\0');
 
     if(!ok)
         QMessageBox::warning(this,"warning",sql->Result());

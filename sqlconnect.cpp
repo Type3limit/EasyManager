@@ -364,7 +364,7 @@ bool SqlConnect::exec_SelectAll(QString paramter)
     else if (!Type.compare("Product"))
     {
         sentence = QString ("SELECT * FROM productsinfo");
-        qDebug()<<"enter Product case";
+
         type= true;
     }
 
@@ -372,7 +372,7 @@ bool SqlConnect::exec_SelectAll(QString paramter)
     {
 
         sentence = QString("SELECT COUNT(*) FROM %1").arg(Part);
-        qDebug()<<"enter manual case";
+
         type = false;
     }
     else {
@@ -386,7 +386,7 @@ bool SqlConnect::exec_SelectAll(QString paramter)
     {
         QSqlRecord rec = query.record();
         int row = rec.count();
-        qDebug()<<"Enter result case,current row:"<<row;
+
         while(query.next())
         {
             for(int i = 0 ;i<row;i++)
@@ -395,13 +395,13 @@ bool SqlConnect::exec_SelectAll(QString paramter)
             }
             result+='#';
         }
-        qDebug()<<"on result case:"<<result;
+
     }
     else if (ok&& !type)
     {
         query.next();
         result  = query.value(0).toString();
-        qDebug()<<"on count case:"<<result;
+
     }
     else
         result = query.lastError().text();

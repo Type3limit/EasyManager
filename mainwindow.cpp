@@ -172,3 +172,8 @@ void MainWindow::on_ProductinButton_clicked()
 {
     ModelDialog.exec();
 }
+
+void MainWindow::on_CustomerinfoButton_clicked()
+{
+    CustomerView.exec();
+}
