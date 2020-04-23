@@ -21,7 +21,8 @@ private:
     void Initilaize();
 
 private slots:
-    void on_comboBox_activated(int index);
+
+    void on_CustomerBox_activated(int index);
 
 private:
     Ui::CustomerViewDialog *ui;

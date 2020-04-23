@@ -320,7 +320,7 @@ bool SqlConnect::exec_SelectSingle(QString paramter)
     }
     else if (!Type.compare("CustomerAmount"))
     {
-        sentence = QString("SELELCT customer_amount FROM customeramount WHERE customer_id  = '%1'").arg(Name);
+        sentence = QString("SELECT customer_amount FROM customeramount WHERE customer_id  = '%1'").arg(Name);
     }
     else if (!Type.compare("ProductCount"))
     {
@@ -386,12 +386,13 @@ bool SqlConnect::exec_SelectAll(QString paramter)
     {
         QSqlRecord rec = query.record();
         int row = rec.count();
-
+        result.clear();
         while(query.next())
         {
             for(int i = 0 ;i<row;i++)
             {
-                result+= QString(",%1").arg(query.value(i).toString());
+                result+= QString("%1").arg(query.value(i).toString());
+                i==(row-1)?result=result:result+=',';
             }
             result+='#';
         }
@@ -610,6 +611,7 @@ bool SqlConnect::exec_Storage_old(QString paramter)
     {
         int number = Numbers.toInt();
         QString CurID = query.value(0).toString();
+
         sentence = QString("UPDATE productcountinfo SET product_count = product_count+ %1 WHERE product_id = '%2'")
                 .arg(number).arg(CurID);
         ok = query.exec(sentence);

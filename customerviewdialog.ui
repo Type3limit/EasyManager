@@ -84,7 +84,7 @@ background-image:url(&quot;:/Theme/BackImage/DialogBack_2.jpg&quot;)
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="Line" name="line">
@@ -136,7 +136,7 @@ background-image:url(&quot;:/Theme/BackImage/DialogBack_2.jpg&quot;)
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -162,7 +162,7 @@ background-image:url(&quot;:/Theme/BackImage/DialogBack_2.jpg&quot;)
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="Line" name="line_3">

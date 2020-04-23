@@ -7,6 +7,7 @@ CustomerViewDialog::CustomerViewDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     sql = nullptr;
+    Initilaize();
 }
 
 CustomerViewDialog::~CustomerViewDialog()
@@ -19,22 +20,21 @@ void CustomerViewDialog::Initilaize()
 {
     if(sql == nullptr)
         sql = new SqlConnect("CustomerView");
-    QString paramter = QString("Manual,Customer");
+    QString paramter = QString("Manual,customerinfo");
     bool ok=sql->exec(FE_SelectAll,paramter);
     if(ok)
     {
         int CustomerCount = sql->Result().toInt();
-        qDebug()<<"On customer initialize count is :"<<CustomerCount;
-        Names = new QString(CustomerCount);
-        IDs = new QString(CustomerCount);
-        Contancts = new QString(CustomerCount);
-        Amounts = new QString(CustomerCount);
-        RegistTimes = new QString(CustomerCount);
+
+        Names = new QString[CustomerCount];
+        IDs = new QString[CustomerCount];
+        Contancts = new QString[CustomerCount];
+        Amounts = new QString[CustomerCount];
+        RegistTimes = new QString[CustomerCount];
         ok = sql->exec(FE_SelectAll,"Customer");
         if(ok)
         {
             QString result  = sql->Result();
-
             auto itr = result.begin();
             for(int i  = 0 ; i<CustomerCount;i++)
             {
@@ -51,7 +51,7 @@ void CustomerViewDialog::Initilaize()
                     itr++;
                 itr++;
                 while(*itr!=SentenceEnded&&*itr!='\0')
-                    RegistTimes[i]=*(itr++);
+                    RegistTimes[i]+=*(itr++);
                 itr++;
                 ui->CustomerBox->addItem(Names[i]);
             }
@@ -62,14 +62,18 @@ void CustomerViewDialog::Initilaize()
     }
 }
 
-void CustomerViewDialog::on_comboBox_activated(int index)
+
+void CustomerViewDialog::on_CustomerBox_activated(int index)
 {
     ui->AccountLabel->setText(Names[index]);
+
     ui->ContanctLabel->setText(Contancts[index]);
+
     ui->RegiteTimeLabel->setText(RegistTimes[index]);
+
     if(sql == nullptr)
         sql = new SqlConnect("CustomerView");
-    bool ok = sql->exec(FE_SelcetSingle,QString("CustomerCount,%1").arg(Names[index]));
+    bool ok = sql->exec(FE_SelcetSingle,QString("CustomerAmount,%1").arg(IDs[index]));
     if(ok)
     {
         ui->AccountLabel->setText(sql->Result());
