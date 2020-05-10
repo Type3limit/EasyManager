@@ -17,8 +17,14 @@ ProductInDialog::~ProductInDialog()
 
 void ProductInDialog::Initlize()
 {
+    ui->ProductChooseBox->clear();
     if(sql == nullptr)
         sql = new SqlConnect("ProductIn");
+    else {
+        delete [] Names;
+        delete [] IDs;
+        delete [] Images;
+    }
     int Count=0;
     bool ok =sql->exec(FE_SelectAll,QString("Manual,productsinfo"));
     if(ok)
@@ -34,7 +40,7 @@ void ProductInDialog::Initlize()
         QMessageBox::information(this,"tips",sql->Result());
     }
     ok = sql->exec(FE_SelectAll,"Product");
-
+    qDebug()<<sql->Result();
     if(ok)
     {
         QString result  = sql->Result();
@@ -43,22 +49,18 @@ void ProductInDialog::Initlize()
         for(int i  = 0 ; i<Count;i++)
         {
             while(*itr!= DepartSambol)
-                itr++;
+                IDs[i]+=*(itr++);
             itr++;
             while(*itr!=DepartSambol)
-                IDs[i]+= *(itr++);
-            itr++;
-            while(*itr!=DepartSambol)
-                Names[i]+=*(itr++);
+                Names[i]+= *(itr++);
             itr++;
             while(*itr!=DepartSambol)
                 Images[i]+=*(itr++);
             itr++;
-            while(*itr!=SentenceEnded&&*itr!='\0')
+            while(*itr!=SentenceEnded)
                 itr++;
             itr++;
             ui->ProductChooseBox->addItem(Names[i]);
-
         }
     }
     else {
@@ -74,9 +76,12 @@ void ProductInDialog::on_ProductChooseBox_activated(int index)
     if(sql==nullptr)
         sql = new SqlConnect("ProductIn");
     QString pram = QString("ProductCount,%1").arg(IDs[index]);
+
     if(sql->exec(FE_SelcetSingle,pram))
     {
-        ui->CountHavenEdit->setText(sql->Result());
+        QString currentNumber = sql->Result();
+        qDebug()<<currentNumber;
+        ui->CountHavenEdit->setText(currentNumber);
         if(!Images[index].isNull())
         {
             QImage image(Images[index]);

@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     sql = nullptr;
+    //sellDialog=nullptr;
+    //CustomerView=nullptr;
     connect(&loginwindow,(&LoginWindows::close),this,(&MainWindow::on_loginwindows_close));
 }
 
@@ -56,7 +58,7 @@ void MainWindow::on_loginwindows_close()
             return ;
         }
     }
-        LoadCustomize();
+    LoadCustomize();
 }
 
 void MainWindow::LoadCustomize()
@@ -72,7 +74,7 @@ void MainWindow::LoadCustomize()
         for(int i = 0; i< ModelNumber;i++,itr+=2)
         {
             QString  cur = *itr;
-           ModelChoose[i] = cur.toInt();
+            ModelChoose[i] = cur.toInt();
         }
 
 
@@ -150,11 +152,17 @@ void MainWindow::on_LoginoutButton_2_clicked()
 {
 
     if(this->close())
-      loginwindow.show();
+        loginwindow.show();
 }
 
 void MainWindow::on_SellButton_clicked()
 {
+    //    if(sellDialog!=nullptr)
+    //        delete sellDialog;
+    //    sellDialog=new SellDialog(this);
+    //    sellDialog->exec();
+    sellDialog.Initialize();
+    if(sellDialog.useable)
     sellDialog.exec();
 }
 
@@ -175,5 +183,17 @@ void MainWindow::on_ProductinButton_clicked()
 
 void MainWindow::on_CustomerinfoButton_clicked()
 {
+//    if(CustomerView!=nullptr)
+//        delete CustomerView;
+//    CustomerView = new CustomerViewDialog(this);
+
+    CustomerView.Initilaize();
     CustomerView.exec();
+}
+
+
+void MainWindow::on_ProductoutButton_clicked()
+{
+    productOutDialog.Initialize();
+    productOutDialog.exec();
 }

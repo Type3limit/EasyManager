@@ -21,5 +21,6 @@ void ProductInModelDialog::on_pushButton_clicked()
 
 void ProductInModelDialog::on_pushButton_2_clicked()
 {
+    productInDialog.Initlize();
     productInDialog.exec();
 }

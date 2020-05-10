@@ -21,7 +21,7 @@ enum Model//模块内容
     Mo_sell //商品贩售
 };
 
-enum FunctionEnum{//数据库提供的功能接口
+enum FunctionEnum{//提供的功能选项
     FE_Customization = 0, //客制化
     FE_Register,//注册
     FE_Login,//登入
@@ -36,12 +36,10 @@ enum FunctionEnum{//数据库提供的功能接口
     FE_Reserve,//预约
     FE_FindPasswd,//找回密码
     FE_ResetPasswd,//重设密码
-    FE_SelcetSingle,//查询（单条内容）
-    FE_SelectAll,//查询所有
+    FE_SelcetSingle,//查询（单条内容）debug
+    FE_SelectAll,//查询所有 debug
     FE_LoadCustomize,//加载客制化
-    FE_CustomerAdd,//添加会员
-
-
+    FE_CustomerAdd//添加会员
 };
 
 const int ModelNumber = 5;//当前模块数

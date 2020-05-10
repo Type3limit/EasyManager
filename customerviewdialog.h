@@ -17,7 +17,7 @@ public:
     explicit CustomerViewDialog(QWidget *parent = nullptr);
     ~CustomerViewDialog();
 
-private:
+public:
     void Initilaize();
 
 private slots:

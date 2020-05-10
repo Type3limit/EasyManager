@@ -14,6 +14,7 @@
 #include <customerrechargedialog.h>
 #include <productinmodeldialog.h>
 #include <customerviewdialog.h>
+#include <productoutdialog.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -51,6 +52,8 @@ private slots:
 
     void on_CustomerinfoButton_clicked();
 
+    void on_ProductoutButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     SqlConnect *sql;
@@ -61,10 +64,11 @@ private:
     LoginWindows loginwindow;
     CustomizeDialog customizeDialog;
     CustomerAddDialog customerAddDialog;
-    SellDialog sellDialog;
+    SellDialog  sellDialog;
     CustomerRechargeDialog CRechargeDialog;
     ProductInModelDialog ModelDialog;
-    CustomerViewDialog CustomerView;
+    CustomerViewDialog  CustomerView;
+    ProductOutDialog productOutDialog;
 
 };
 #endif // MAINWINDOW_H

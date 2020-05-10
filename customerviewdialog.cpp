@@ -18,8 +18,17 @@ CustomerViewDialog::~CustomerViewDialog()
 
 void CustomerViewDialog::Initilaize()
 {
+    ui->CustomerBox->clear();
+
     if(sql == nullptr)
         sql = new SqlConnect("CustomerView");
+    else {
+        delete [] Names;
+        delete [] IDs;
+        delete [] Contancts;
+        delete [] Amounts;
+        delete [] RegistTimes;
+    }
     QString paramter = QString("Manual,customerinfo");
     bool ok=sql->exec(FE_SelectAll,paramter);
     if(ok)
@@ -65,8 +74,6 @@ void CustomerViewDialog::Initilaize()
 
 void CustomerViewDialog::on_CustomerBox_activated(int index)
 {
-    ui->AccountLabel->setText(Names[index]);
-
     ui->ContanctLabel->setText(Contancts[index]);
 
     ui->RegiteTimeLabel->setText(RegistTimes[index]);

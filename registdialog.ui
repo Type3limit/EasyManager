@@ -35,6 +35,11 @@ QLabel
 {
 font:bold 12px;
 color:black
+}
+
+QPushButton
+{
+font:bold 15px;
 }</string>
   </property>
   <widget class="QLineEdit" name="NameEdit">

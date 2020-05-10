@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>EasyManager-CustomerView</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel
@@ -46,6 +46,9 @@ background-image:url(&quot;:/Theme/BackImage/DialogBack_2.jpg&quot;)
      <width>711</width>
      <height>61</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font:bold 15px;</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">

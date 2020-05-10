@@ -27,6 +27,7 @@ SOURCES += \
     productadddialog.cpp \
     productindialog.cpp \
     productinmodeldialog.cpp \
+    productoutdialog.cpp \
     registdialog.cpp \
     resetpasswddialog.cpp \
     selldialog.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
     productadddialog.h \
     productindialog.h \
     productinmodeldialog.h \
+    productoutdialog.h \
     registdialog.h \
     resetpasswddialog.h \
     selldialog.h \
@@ -59,6 +61,7 @@ FORMS += \
     productadddialog.ui \
     productindialog.ui \
     productinmodeldialog.ui \
+    productoutdialog.ui \
     registdialog.ui \
     resetpasswddialog.ui \
     selldialog.ui

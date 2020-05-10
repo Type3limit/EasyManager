@@ -6,7 +6,7 @@ SqlConnect::SqlConnect(QString type)
 
     db = new QSqlDatabase();
     *db = QSqlDatabase::addDatabase("QMYSQL",type);
-    db->setHostName("mylocal");
+    db->setHostName("localhost");
     db->setPort(3306);
     db->setDatabaseName("EasyManager");
     db->setUserName("root");
@@ -392,7 +392,8 @@ bool SqlConnect::exec_SelectAll(QString paramter)
             for(int i = 0 ;i<row;i++)
             {
                 result+= QString("%1").arg(query.value(i).toString());
-                i==(row-1)?result=result:result+=',';
+                if(i!=(row-1))
+                      result+=',';
             }
             result+='#';
         }
@@ -402,7 +403,6 @@ bool SqlConnect::exec_SelectAll(QString paramter)
     {
         query.next();
         result  = query.value(0).toString();
-
     }
     else
         result = query.lastError().text();
@@ -657,7 +657,7 @@ bool SqlConnect::exec_Release(QString paramter)
 
     int CurNumber,StoragedNumber=0;
     CurNumber = Number.toInt();
-    QString sentence = QString("SELECT product_id FROM productsinfo WHERE productname = '%1'").arg(Name);
+    QString sentence = QString("SELECT product_id FROM productsinfo WHERE product_name = '%1'").arg(Name);
     bool ok = query.exec(sentence);
     if(query.next())
     {
@@ -733,14 +733,14 @@ bool SqlConnect::exec_Consume(QString paramter)
     if(ok)
     {
         sentence=QString ("INSERT INTO customationinfo(consume_custom_id,consume_product_id,"
-                          "consume_custom_amount,consume_count)").arg(CustomerID).arg(ProductID)
-                .arg(Amount).arg(Count);
+                          "consume_custom_amount,consume_count,consume_time)VALUES('%1','%2','%3','%4','%5')")
+                .arg(CustomerID).arg(ProductID).arg(Amount).arg(Count).arg(Time);
         query.clear();
         ok=query.exec(sentence);
         int Single = (Amount.toInt())/(Count.toInt());
         sentence=QString ("%1,%2,%3").arg(ProductName).arg(Count).arg(Single);
         ok = exec_Release(sentence);
-        sentence =QString("SELECT custom_amount FROM customeramount WHERE custom_id = '%1' ").arg(CustomerID);
+        sentence =QString("SELECT customer_amount FROM customeramount WHERE customer_id = '%1' ").arg(CustomerID);
         query.clear();
         ok = query.exec(sentence);
         double CurAmount= 0;
@@ -748,18 +748,23 @@ bool SqlConnect::exec_Consume(QString paramter)
         {
             CurAmount = query.value(0).toDouble();
             double Diff =CurAmount - Amount.toDouble();
-            sentence = QString ("UPDATE customeramount SET custom_amount= '%1' WHERE custom_id = '%2'")
+            sentence = QString ("UPDATE customeramount SET customer_amount= '%1' WHERE customer_id = '%2'")
                     .arg(Diff).arg(CustomerID);
+            query.clear();
+            ok = query.exec(sentence);
+            sentence = QString ("UPDATE productcountinfo SET product_count = product_count - '%1' WHERE product_id = '%2'")
+                    .arg(Count).arg(ProductID);
             query.clear();
             ok = query.exec(sentence);
         }
         else {
             ok = false;
         }
+        result= "消费信息已记录，谢谢惠顾！";
 
     }
     if(!ok)
-        result = "消费信息记录失败";
+        result = query.lastError().text();
 
     return ok;
 }
@@ -864,8 +869,6 @@ bool SqlConnect::exec_BeReady(QString paramter)
                 ok = query.exec(sentence);
             }
         }
-
-
     }
     if(!ok)
         result = query.lastError().text();

@@ -13,7 +13,7 @@ class ProductInDialog : public QDialog
 {
     Q_OBJECT
 
-private:
+public:
     void Initlize();
 
 
